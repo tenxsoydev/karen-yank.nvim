@@ -1,0 +1,5 @@
+column_width = 120
+indent_type = "Tabs"
+quote_style = "AutoPreferDouble"
+call_parentheses = "None"
+collapse_simple_statement = "Always"
