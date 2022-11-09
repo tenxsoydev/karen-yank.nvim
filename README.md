@@ -26,6 +26,7 @@ To inverse the functionality i.e., using `<karen>d` to delete into the black hol
 <sub>In musical terms, we could say that this is the time interval in which a sequence of notes in an arpeggio needs to be played in order to be recognized as a chord.</sub>
 
 <sub>A value like `350` is imho appropriate. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences, e.g., on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. This is no realted to the use of this plugin. Check `:h timeoutlen` to set it up to your preference.</sub>
+
 </details>
 
 ## Installation
@@ -60,13 +61,13 @@ require("karen-yank").setup {
 		black_hole_default = true,
 		-- Preserve cursor position on yank
 		preserve_cursor = true,
-		preserve_seleciton = false,
+		preserve_selection = false,
 	},
 	on_paste = {
 		-- True: paste-over-selection will delete replaced text without moving it into a register - Vim default.
 		-- False: paste-over-selection will move the replaced text into a register
 		black_hole_default = true,
-		preserve_seleciton = false,
+		preserve_selection = false,
 	},
 	mappings = {
 		-- The key that controls usage of registers - will probably talk to the manager when things don't work as intended
