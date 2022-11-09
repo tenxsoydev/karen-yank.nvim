@@ -1,5 +1,7 @@
 local M = {}
 
+---@param reg_one string|number
+---@param reg_two string|number
 local function sync_regs(reg_one, reg_two) vim.cmd(string.format("let @%s=@%s", reg_one, reg_two)) end
 
 ---@param num_reg_opts NumberRegOpts
@@ -13,20 +15,20 @@ local function handle_num_regs(num_reg_opts)
 	end
 end
 
----@param transitory_reg string
+---@param transitory_reg TransitoryRegOpts
 function M.handle_duplicates(transitory_reg)
 	local current_yank = vim.fn.getreg(0)
 	for i = 1, 9 do
 		local reg = vim.fn.getreg(i)
 		if reg == current_yank then
 			vim.fn.setreg(i, "")
-			if i ~= 9 then sync_regs(transitory_reg, 9) end
+			if i ~= 9 then sync_regs(transitory_reg.reg, 9) end
 			for x = i, 8 do
 				sync_regs(x, x + 1)
 			end
 			if i ~= 9 then
-				sync_regs(9, transitory_reg)
-				vim.fn.setreg(transitory_reg, "")
+				sync_regs(9, transitory_reg.reg)
+				vim.fn.setreg(transitory_reg.reg, transitory_reg.placeholder)
 			end
 		end
 	end
@@ -42,10 +44,11 @@ function M.handle_delete(key_lhs)
 end
 
 ---@param yank_opts YankOpts
-function M.handle_yank(key_lhs, yank_opts)
+---@param num_reg_opts NumberRegOpts
+function M.handle_yank(key_lhs, yank_opts, num_reg_opts)
 	local key_rhs = key_lhs
 
-	handle_num_regs(yank_opts.number_regs)
+	handle_num_regs(num_reg_opts)
 
 	local mode = vim.api.nvim_get_mode()["mode"]
 	if mode == "n" then return key_rhs end

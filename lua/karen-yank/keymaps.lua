@@ -53,7 +53,7 @@ function M.set_maps(config)
 			map(
 				"v",
 				config.mappings.karen .. key,
-				function() return handlers.handle_paste(key, config.on_paste, config.on_yank.number_regs) end,
+				function() return handlers.handle_paste(key, config.on_paste, config.number_regs) end,
 				{ expr = true, desc = desc }
 			)
 		end
@@ -61,14 +61,19 @@ function M.set_maps(config)
 		map(
 			"v",
 			key,
-			function() return handlers.handle_paste(key, config.on_paste, config.on_yank.number_regs) end,
+			function() return handlers.handle_paste(key, config.on_paste, config.number_regs) end,
 			{ expr = true, desc = desc }
 		)
 	end
 
 	for key, desc in pairs(reg_keys.yanking) do
 		if key == "Y" then key = "y$" end
-		map("", key, function() return handlers.handle_yank(key, config.on_yank) end, { expr = true, desc = desc })
+		map(
+			"",
+			key,
+			function() return handlers.handle_yank(key, config.on_yank, config.number_regs) end,
+			{ expr = true, desc = desc }
+		)
 	end
 end
 
