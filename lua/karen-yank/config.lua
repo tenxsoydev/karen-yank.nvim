@@ -9,7 +9,7 @@ local M = {}
 ---@field number_regs NumberRegOpts
 ---@field black_hole_default boolean
 ---@field preserve_cursor boolean
----@field preserve_seleciton boolean
+---@field preserve_selection boolean
 
 ---@class NumberRegOpts
 ---@field enable boolean

@@ -50,7 +50,7 @@ function M.handle_yank(key_lhs, yank_opts)
 	local mode = vim.api.nvim_get_mode()["mode"]
 	if mode == "n" then return key_rhs end
 
-	if yank_opts.preserve_seleciton then
+	if yank_opts.preserve_selection then
 		key_rhs = key_rhs .. "gv"
 		return key_rhs
 	end
