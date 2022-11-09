@@ -21,7 +21,7 @@ local M = {}
 ---@field transitory_reg TransitoryRegOpts
 
 ---@class TransitoryRegOpts
----@field reg string|'[a-z]'
+---@field reg string '[a-z]'
 ---@field placeholder string|false
 
 ---@class MappingOpts
