@@ -36,13 +36,13 @@ function M.set_maps(config)
 			goto continue
 		end
 
-		if config.on_yank.black_hole_default then
-			map({ "n", "v" }, key, '"_' .. key, { desc = desc })
-			map({ "n", "v" }, config.mappings.karen .. key, key, { desc = desc .. " Into Register" })
+		if not config.on_yank.black_hole_default then
+			map({ "n", "v" }, config.mappings.karen .. key, '"_' .. key, { desc = desc })
 			goto continue
 		end
 
-		map({ "n", "v" }, config.mappings.karen .. key, '"_' .. key, { desc = desc })
+		map({ "n", "v" }, key, function() return handlers.handle_delete(key) end, { expr = true, desc = desc })
+		map({ "n", "v" }, config.mappings.karen .. key, key, { desc = "Yank and " .. desc })
 
 		::continue::
 	end

@@ -26,6 +26,15 @@ local function handle_num_regs(num_reg_opts)
 	if num_reg_opts.deduplicate then vim.loop.new_timer():start(50, 0, vim.schedule_wrap(handle_duplicates)) end
 end
 
+function M.handle_delete(key_lhs)
+	local key_rhs = key_lhs
+
+	if vim.api.nvim_command_output("ec v:register"):match "%w" then return key_rhs end
+
+	key_rhs = '"_' .. key_rhs
+	return key_rhs
+end
+
 ---@param yank_opts YankOpts
 function M.handle_yank(key_lhs, yank_opts)
 	local key_rhs = key_lhs
