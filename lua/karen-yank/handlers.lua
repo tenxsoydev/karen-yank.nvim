@@ -4,19 +4,8 @@ local M = {}
 ---@param reg_two string|number
 local function sync_regs(reg_one, reg_two) vim.cmd(string.format("let @%s=@%s", reg_one, reg_two)) end
 
----@param num_reg_opts NumberRegOpts
-local function handle_num_regs(num_reg_opts)
-	if vim.api.nvim_command_output("ec v:register"):match "%w" or not num_reg_opts.enable then return end
-
-	local x = 9
-	while x > 0 do
-		sync_regs(x, x - 1)
-		x = x - 1
-	end
-end
-
 ---@param transitory_reg TransitoryRegOpts
-function M.handle_duplicates(transitory_reg)
+local function handle_duplicates(transitory_reg)
 	local current_yank = vim.fn.getreg(0)
 	for i = 1, 9 do
 		local reg = vim.fn.getreg(i)
@@ -28,9 +17,26 @@ function M.handle_duplicates(transitory_reg)
 			end
 			if i ~= 9 then
 				sync_regs(9, transitory_reg.reg)
-				vim.fn.setreg(transitory_reg.reg, transitory_reg.placeholder)
+				if transitory_reg.placeholder then vim.fn.setreg(transitory_reg.reg, transitory_reg.placeholder) end
 			end
 		end
+	end
+end
+
+---@param num_reg_opts NumberRegOpts
+local function handle_num_regs(num_reg_opts)
+	if vim.api.nvim_command_output("ec v:register"):match "%w" or not num_reg_opts.enable then return end
+
+	local x = 9
+	while x > 0 do
+		sync_regs(x, x - 1)
+		x = x - 1
+	end
+
+	if num_reg_opts.deduplicate then
+		vim.loop
+			 .new_timer()
+			 :start(50, 0, vim.schedule_wrap(function() handle_duplicates(num_reg_opts.transitory_reg) end))
 	end
 end
 
