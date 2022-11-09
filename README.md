@@ -10,7 +10,9 @@ Karen Yank<br>
 
 ## Usage
 
-With the plugin's default configuration, deletions will only populate registers when intended. E.g., `d` will **delete** (into the balck hole register `"_`) by default and **cut** in a `yd` key chord. Therefore, `p` will use only the last cut text or specified registers.
+With the plugin's default configuration, deletions will only populate registers / your clipboard when intended.
+
+E.g., `d` will **delete** (into the balck hole register `"_`) by default and **cut** in a `yd` key chord. Therefore, `p` will use only the last cut text or specified registers.
 
 The rest stays true to VIMs defaults:
 
