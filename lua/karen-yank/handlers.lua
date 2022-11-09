@@ -4,7 +4,12 @@ local function handle_duplicates()
 	local current_yank = vim.fn.getreg(0)
 	for i = 1, 9 do
 		local reg = vim.fn.getreg(i)
-		if reg == current_yank then vim.fn.setreg(i, "") end
+		if reg == current_yank then
+			vim.fn.setreg(i, "")
+			for x = i, 8 do
+				vim.cmd(string.format("let @%s=@%s", x, x + 1))
+			end
+		end
 	end
 end
 
