@@ -55,7 +55,7 @@ function M.handle_paste(key_lhs, paste_opts, num_reg_opts)
 
 	if not paste_opts.black_hole_default then handle_num_regs(num_reg_opts) end
 	if num_reg_opts.enable then key_rhs = '"0ygv' .. key_rhs end
-	if paste_opts.preserve_seleciton then key_rhs = key_rhs .. "`[v`]" end
+	if paste_opts.preserve_selection then key_rhs = key_rhs .. "`[v`]" end
 
 	return key_rhs
 end

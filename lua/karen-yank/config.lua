@@ -17,7 +17,7 @@ local M = {}
 
 ---@class PasteOpts
 ---@field black_hole_default boolean
----@field preserve_seleciton boolean
+---@field preserve_selection boolean
 
 ---@class MappingOpts
 ---@field karen string
@@ -34,11 +34,11 @@ local default_config = {
 		},
 		black_hole_default = true,
 		preserve_cursor = true,
-		preserve_seleciton = false,
+		preserve_selection = false,
 	},
 	on_paste = {
 		black_hole_default = true,
-		preserve_seleciton = false,
+		preserve_selection = false,
 	},
 	mappings = {
 		karen = "y",
