@@ -35,11 +35,12 @@ local function handle_num_regs(num_reg_opts)
 
 	if num_reg_opts.deduplicate then
 		vim.loop
-			 .new_timer()
-			 :start(50, 0, vim.schedule_wrap(function() handle_duplicates(num_reg_opts.transitory_reg) end))
+			.new_timer()
+			:start(50, 0, vim.schedule_wrap(function() handle_duplicates(num_reg_opts.transitory_reg) end))
 	end
 end
 
+---@param key_lhs string
 function M.handle_delete(key_lhs)
 	local key_rhs = key_lhs
 
@@ -49,6 +50,7 @@ function M.handle_delete(key_lhs)
 	return key_rhs
 end
 
+---@param key_lhs string
 ---@param yank_opts YankOpts
 ---@param num_reg_opts NumberRegOpts
 function M.handle_yank(key_lhs, yank_opts, num_reg_opts)
@@ -72,6 +74,7 @@ function M.handle_yank(key_lhs, yank_opts, num_reg_opts)
 	return key_rhs
 end
 
+---@param key_lhs string
 ---@param paste_opts PasteOpts
 ---@param num_reg_opts NumberRegOpts
 function M.handle_paste(key_lhs, paste_opts, num_reg_opts)
