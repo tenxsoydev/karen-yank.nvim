@@ -12,14 +12,14 @@ Karen Yank<br>
 
 With the plugin's default configuration, deletions will only populate registers / your clipboard when intended.
 
-E.g., `d` will **delete** (into the balck hole register `"_`) by default and **cut** in a `yd` key chord. Therefore, `p` will use only the last cut text or specified registers.
+E.g., `d` will **delete** (into the black hole register `"_`) by default and **cut** in a `yd` key chord. Therefore, `p` will use only the last cut text or specified registers.
 
 The rest stays true to VIMs defaults:
 
 - a _motion_ like `ciw` will delete a word and start insert, while `yciw` will cut a word and start insert. `dd` deletes a line, `ydd` cuts a line etc.
 - in _visual_ mode `yd` pressed in \*`timeoutlen` will cut. While just `y` will yank as usual after `timeoutlen` (or immediately when followed by something like a movement with `j`. So no impairments with fast typing)
 
-To inverse the functionality i.e., using `<karen>d` to delete into the black hole register, check the config section.
+To invert the functionality i.e., using `<karen>d` to delete into the black hole register, check the config section.
 
 <details>
 <summary><sub><code>*timeoutlen</code>…</sub></summary>
