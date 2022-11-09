@@ -24,10 +24,13 @@ To invert the functionality i.e., using `<karen>d` to delete into the black hole
 <details>
 <summary><sub><code>*timeoutlen</code>…</sub></summary>
 
-<blockquote><sub>"Time in milliseconds to wait for a mapped sequence to complete" (default 1000ms) – vim-docs.</sub></blockquote> 
+<blockquote><sub>"Time in milliseconds to wait for a mapped sequence to complete" (default 1000ms) – vim-docs.</sub></blockquote>
+
+<sub>To say a word about this VIM setting that goes beyond the use of this plugin:</sub>
+
 <sub>In musical terms, we could say that this is the time interval in which a sequence of notes in an arpeggio needs to be played in order to be recognized as a chord.</sub>
 
-<sub>A value like `350` is imho appropriate. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences, e.g., on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. This is no realted to the use of this plugin. Check `:h timeoutlen` to set it up to your preference.</sub>
+<sub>A value like `350` is imho appropriate. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences, e.g., on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. Check `:h timeoutlen` to set it up to your preference.</sub>
 
 </details>
 
@@ -94,7 +97,9 @@ require("karen-yank").setup {
 
 Since there is no real API, the configuration strives to provide all the options on which a user could potentially fall short if he tries to customize the plugin's behavior.
 
-However, there is no need to add a set of predefined commands or keymaps that can be created with maximum freedom of customization in one's own nvim configuration. To give some plugin-related examples.
+However, creating an extended set of predefined commands and keyboard mappings was not considered suitable, as they can be created in nvim's own configuration with maximum customizability.
+
+To give just two plugin-related examples:
 
 As `ddp` and `ddP` is sometimes used to move lines down / up.
 One could use `<A-j>` and `<A-k>` to move lines and ranges.
