@@ -14,6 +14,7 @@ local M = {}
 ---@class NumberRegOpts
 ---@field enable boolean
 ---@field deduplicate boolean
+---@field transitory_reg string
 
 ---@class PasteOpts
 ---@field black_hole_default boolean
@@ -31,6 +32,7 @@ local default_config = {
 		number_regs = {
 			enable = true,
 			deduplicate = true,
+			transitory_reg = "y",
 		},
 		black_hole_default = true,
 		preserve_cursor = true,
