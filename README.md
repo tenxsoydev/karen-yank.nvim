@@ -1,7 +1,7 @@
 # karen-yank 👩🏼‍🏫
 
 Karen Yank<br>
-<sup>– wants to cut, delete and copy her way</sup>
+<sup>– cuts, deletes and copies your way</sup>
 
 ## Main idea
 
@@ -20,7 +20,6 @@ The rest stays true to VIMs defaults:
 
 To inverse the functionality i.e., using `<karen>d` to delete into the black hole register, check the config section.
 
-<sub>
 <details>
 <summary><code>*timeoutlen</code>…</summary>
 
@@ -29,7 +28,6 @@ _"Time in milliseconds to wait for a mapped sequence to complete" (default 1000m
 A value like `350` is imho appropriate. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. Check `:h timeoutlen` to set it up to your preference.
 
 </details>
-</sub>
 
 ## Installation
 
