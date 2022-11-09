@@ -1,5 +1,7 @@
 local M = {}
 
+local function sync_regs(reg_one, reg_two) vim.cmd(string.format("let @%s=@%s", reg_one, reg_two)) end
+
 local function handle_duplicates()
 	local current_yank = vim.fn.getreg(0)
 	for i = 1, 9 do
@@ -7,7 +9,7 @@ local function handle_duplicates()
 		if reg == current_yank then
 			vim.fn.setreg(i, "")
 			for x = i, 8 do
-				vim.cmd(string.format("let @%s=@%s", x, x + 1))
+				sync_regs(x, x + 1)
 			end
 		end
 	end
@@ -19,7 +21,7 @@ local function handle_num_regs(num_reg_opts)
 
 	local x = 9
 	while x > 0 do
-		vim.cmd(string.format("let @%s=@%s", x, x - 1))
+		sync_regs(x, x - 1)
 		x = x - 1
 	end
 
