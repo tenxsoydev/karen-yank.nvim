@@ -52,12 +52,6 @@ Defaults:
 ```lua
 require("karen-yank").setup {
 	on_yank = {
-		number_regs = {
-			-- Use number registers for yanks
-			enable = true,
-			-- Prevent populating multiple number registers with the same entries
-			deduplicate = true,
-		},
 		-- True: delete into "_ by default; use regular registers with karen key
 		-- False: use regular registers by default; delete into "_ with karen key
 		black_hole_default = true,
@@ -71,6 +65,20 @@ require("karen-yank").setup {
 		black_hole_default = true,
 		preserve_selection = false,
 	},
+	number_regs = {
+		-- Use number registers for yanks
+		enable = true,
+		-- Prevent populating multiple number registers with the same entries
+		deduplicate = true,
+		-- For some conditions karen will use a transitory register
+		transitory_reg = {
+			-- Register to use
+			reg = "y",
+			-- Placeholder with which the register will be filled after use
+			-- E.g. possible values are '""' to clear it or 'false' to leave the transient content
+			placeholder = "👩🏼",
+		},
+	},
 	mappings = {
 		-- The key that controls usage of registers - will probably talk to the manager when things don't work as intended
 		-- You can map e.g., "<leader><leader>" if you are using the plugin inverted(black_whole_default=false)
@@ -80,6 +88,36 @@ require("karen-yank").setup {
 		unused = { "s", "S" },
 	},
 }
+```
+
+## Additional Info
+
+Since there is no real API, the configuration strives to provide all the options on which a user could potentially fall short if he tries to customize the plugin's behavior.
+
+However, there is no need to add a set of predefined commands or keymaps that can be created with maximum freedom of customization in one's own nvim configuration. To give some plugin-related examples.
+
+As `ddp` and `ddP` is sometimes used to move lines down / up.
+One could use `<A-j>` and `<A-k>` to move lines and ranges.
+
+```lua
+local map = vim.keymap.set
+-- ...
+-- Move Lines: using `:` vs `<Cmd>` makes a difference
+map("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move Line Down" })
+map("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move Line Up" })
+map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move Line Down" })
+map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move Line Up" })
+map("v", "<A-j>", ":m '>+1<CR>gv-gv", { desc = "Move Lines Down" })
+map("v", "<A-k>", ":m '<-2<CR>gv-gv", { desc = "Move Lines Up" })
+```
+
+A command to clear registers could look like:
+
+```lua
+vim.api.nvim_create_user_command("WipeRegisters", function()
+	vim.cmd "for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor"
+	vim.cmd "wshada!"
+end, { desc = "Clear All Registers" })
 ```
 
 ## Justification
