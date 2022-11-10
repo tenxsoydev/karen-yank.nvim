@@ -36,7 +36,7 @@ function M.set_maps(config)
 			goto continue
 		end
 
-		if not config.on_yank.black_hole_default or not config.on_delete.black_hole_default then
+		if not config.on_delete.black_hole_default then
 			map({ "n", "v" }, config.mappings.karen .. key, '"_' .. key, { desc = desc })
 			goto continue
 		end
@@ -48,6 +48,13 @@ function M.set_maps(config)
 	end
 
 	for key, desc in pairs(reg_keys.pasting) do
+		map(
+			"v",
+			key,
+			function() return handlers.handle_paste(key, config.on_paste, config.number_regs) end,
+			{ expr = true, desc = desc }
+		)
+
 		if config.on_paste.black_hole_default then
 			desc = desc .. " and Yank Selection Into Register"
 			map(
@@ -57,13 +64,6 @@ function M.set_maps(config)
 				{ expr = true, desc = desc }
 			)
 		end
-
-		map(
-			"v",
-			key,
-			function() return handlers.handle_paste(key, config.on_paste, config.number_regs) end,
-			{ expr = true, desc = desc }
-		)
 	end
 
 	for key, desc in pairs(reg_keys.yanking) do

@@ -11,7 +11,6 @@ local M = {}
 ---@field black_hole_default boolean
 
 ---@class YankOpts
----@field black_hole_default boolean @deprecated
 ---@field preserve_cursor boolean
 ---@field preserve_selection boolean
 
@@ -40,7 +39,6 @@ local default_config = {
 		black_hole_default = true,
 	},
 	on_yank = {
-		-- black_hole_default = true,
 		preserve_cursor = true,
 		preserve_selection = false,
 	},
