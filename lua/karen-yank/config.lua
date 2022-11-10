@@ -2,12 +2,16 @@ local M = {}
 
 ---@class Config
 ---@field number_regs NumberRegOpts
+---@field on_delete DeleteOpts
 ---@field on_yank YankOpts
 ---@field on_paste PasteOpts
 ---@field mappings MappingOpts
 
----@class YankOpts
+---@class DeleteOpts
 ---@field black_hole_default boolean
+
+---@class YankOpts
+---@field black_hole_default boolean @deprecated
 ---@field preserve_cursor boolean
 ---@field preserve_selection boolean
 
@@ -32,8 +36,11 @@ local M = {}
 
 ---@type Config
 local default_config = {
-	on_yank = {
+	on_delete = {
 		black_hole_default = true,
+	},
+	on_yank = {
+		-- black_hole_default = true,
 		preserve_cursor = true,
 		preserve_selection = false,
 	},

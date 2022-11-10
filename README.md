@@ -54,10 +54,12 @@ Defaults:
 
 ```lua
 require("karen-yank").setup {
-	on_yank = {
+	on_delete = {
 		-- True: delete into "_ by default; use regular registers with karen key
 		-- False: use regular registers by default; delete into "_ with karen key
 		black_hole_default = true,
+	},
+	on_yank = {
 		-- Preserve cursor position on yank
 		preserve_cursor = true,
 		preserve_selection = false,

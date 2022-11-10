@@ -36,7 +36,7 @@ function M.set_maps(config)
 			goto continue
 		end
 
-		if not config.on_yank.black_hole_default then
+		if not config.on_yank.black_hole_default or not config.on_delete.black_hole_default then
 			map({ "n", "v" }, config.mappings.karen .. key, '"_' .. key, { desc = desc })
 			goto continue
 		end
