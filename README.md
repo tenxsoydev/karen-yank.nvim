@@ -12,7 +12,7 @@ Karen Yank<br>
 
 With the plugin's default configuration, deletions will only populate registers / your clipboard when intended.
 
-E.g., `d` will **delete** (into the black hole register `"_`) by default and **cut** in a `yd` key chord. Therefore, `p` will use only the last cut text or specified registers.
+E.g., `d` will **delete** (into the black hole register `"_`) by default and **cut** in a `yd` key-chord. Therefore, `p` will use only the last cut text, the contents of your system clipboard, or a register specified before pasting.
 
 The rest stays true to VIMs defaults:
 
@@ -30,7 +30,7 @@ To invert the functionality i.e., using `<karen>d` to delete into the black hole
 
 <sub>In musical terms, we could say that this is the time interval in which a sequence of notes in an arpeggio needs to be played in order to be recognized as a chord.</sub>
 
-<sub>A value like `350` is imho appropriate. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences, e.g., on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. Check `:h timeoutlen` to set it up to your preference.</sub>
+<sub>A value of `350` is suitable imo. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences, e.g., on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. Check `:h timeoutlen` to set it up to your preference.</sub>
 
 </details>
 
@@ -99,9 +99,9 @@ require("karen-yank").setup {
 
 Since there is no real API, the configuration strives to provide all the options on which a user could potentially fall short if he tries to customize the plugin's behavior.
 
-However, creating an extended set of predefined commands and keyboard mappings was not considered suitable, as they can be created in nvim's own configuration with maximum customizability.
+However, creating an extended set of predefined commands and keyboard mappings was not considered appropriate, as they can be created in nvim's own configuration with maximum customizability.
 
-To give just two plugin-related examples:
+To give just three plugin-related examples:
 
 As `ddp` and `ddP` is sometimes used to move lines down / up.
 One could use `<A-j>` and `<A-k>` to move lines and ranges.
@@ -116,6 +116,15 @@ map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move Line Down" })
 map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move Line Up" })
 map("v", "<A-j>", ":m '>+1<CR>gv-gv", { desc = "Move Lines Down" })
 map("v", "<A-k>", ":m '<-2<CR>gv-gv", { desc = "Move Lines Up" })
+```
+
+Highlight on yank
+
+```lua
+vim.api.nvim_create_autocmd(
+	"TextYankPost",
+	{ callback = function() vim.highlight.on_yank { higroup = "IncSearch", timeout = 150 } end }
+)
 ```
 
 A command to clear registers could look like:
@@ -134,6 +143,7 @@ There are dozen of plugins that deal with VIMs yanks and registers so why anothe
 - This plugin is rather a complementary helper than a competitor. E.g., other plugins to use it with:
   - [`registers.nvim`][20] for a general enhancement of interaction with registers
   - [`Telescope`][30]'s `registers` subcommand for fuzzy searching register contents
+  - Any clipboard manager for your OS
 - It was already finished: The UX this plugin provides was a part of my vim config since its pre-lua days.
   Wrapping it up in a plugin and making it public for other strangers like me was just a matter of making some of its functionalities configurable - _hoping not to have messed anything up along the way_.
 

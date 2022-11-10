@@ -1,10 +1,10 @@
 local M = {}
 
 ---@class Config
----@field number_regs NumberRegOpts
 ---@field on_delete DeleteOpts
 ---@field on_yank YankOpts
 ---@field on_paste PasteOpts
+---@field number_regs NumberRegOpts
 ---@field mappings MappingOpts
 
 ---@class DeleteOpts
@@ -62,7 +62,7 @@ local default_config = {
 	},
 }
 
----@param user_config Config
+---@param user_config Config|table
 ---@return Config
 function M.merge(user_config) return vim.tbl_deep_extend("keep", user_config, default_config) end
 
