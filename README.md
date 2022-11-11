@@ -22,15 +22,19 @@ The rest stays true to VIMs defaults:
 To invert the functionality i.e., using `<karen>d` to delete into the black hole register, check the config section.
 
 <details>
+
 <summary><sub><code>*timeoutlen</code>…</sub></summary>
 
 <blockquote><sub>"Time in milliseconds to wait for a mapped sequence to complete" (default 1000ms) – vim-docs.</sub></blockquote>
 
-<sub>To say a word about this VIM setting that goes beyond the use of this plugin:</sub>
+<sub> Adding my two cents to this VIM setting that go beyond the use of this plugin:
+</sub>
 
-<sub>In musical terms, we could say that this is the time interval in which a sequence of notes in an arpeggio needs to be played in order to be recognized as a chord.</sub>
+<sub> From a musical point of view, one could say that this is the time interval in which a sequence of notes in an arpeggio needs to be played in order to be recognized as a chord.
+</sub>
 
-<sub>A value of `350` is suitable imo. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences, e.g., on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. Check `:h timeoutlen` to set it up to your preference.</sub>
+<sub> A value like `350` is suitable imo. It is usually sufficient to press the "initializing" keys of a sequence in this time frame. For this plugin this would be e.g. `yd`, then it will wait for the rest of the motion keys. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences, e.g., on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. Check `:h timeoutlen` to set it up to your preference with related settings.
+</sub>
 
 </details>
 
