@@ -54,7 +54,6 @@ function M.set_maps(config)
 		end
 	end
 
-	if vim.o.clipboard ~= "unnamedplus" then return end
 	for _, key in pairs(reg_keys.yank) do
 		map(
 			"",
