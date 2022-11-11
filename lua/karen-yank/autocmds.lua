@@ -14,15 +14,15 @@ function M.set_aus(num_reg_opts)
 		return
 	end
 
-	if num_reg_opts.enable then
-		vim.api.nvim_create_autocmd("TextYankPost", {
-			pattern = { "*", "+" },
-			callback = function()
-				handlers.sync_regs(0, "+")
-				if num_reg_opts.deduplicate then handlers.handle_duplicates(num_reg_opts.transitory_reg) end
-			end,
-		})
-	end
+	if not num_reg_opts.enable then return end
+
+	vim.api.nvim_create_autocmd("TextYankPost", {
+		pattern = { "*", "+" },
+		callback = function()
+			handlers.sync_regs(0, "+")
+			if num_reg_opts.deduplicate then handlers.handle_duplicates(num_reg_opts.transitory_reg) end
+		end,
+	})
 end
 
 return M
