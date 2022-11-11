@@ -36,7 +36,7 @@ To invert the functionality i.e., using `<karen>d` to delete into the black hole
 
 ## Installation
 
-E.g., using a plugin a plugin manager like [packer.nvim][10]
+E.g., using a plugin manager like [packer.nvim][10]
 
 ```lua
 use "tenxsoydev/karen-yank.nvim"
@@ -97,50 +97,55 @@ require("karen-yank").setup {
 
 ## Additional Info
 
+Karen was designed mainly with the mind of using nvim in sync with the system clipboard ("unnamedplus"). Other modes may be subject to shortcomings.
+
+<details>
+<summary><i>Plugin-related functionalities</i></summary>
+
 Since there is no real API, the configuration strives to provide all the options on which a user could potentially fall short if he tries to customize the plugin's behavior.
 
-However, creating an extended set of predefined commands and keyboard mappings was not considered appropriate, as they can be created in nvim's own configuration with maximum customizability.
+However, creating an extended set of predefined commands and keyboard mappings was not considered appropriate, as they can be created in nvim's own configuration with maximum customizability. E.g.,
 
-To give just three plugin-related examples:
+1. As `ddp` and `ddP` is sometimes used to move lines down / up.
+   One could use `<A-j>` and `<A-k>` to move lines and ranges.
 
-As `ddp` and `ddP` is sometimes used to move lines down / up.
-One could use `<A-j>` and `<A-k>` to move lines and ranges.
+   ```lua
+   local map = vim.keymap.set
+   -- ...
+   -- Move Lines: using `:` vs `<Cmd>` makes a difference
+   map("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move Line Down" })
+   map("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move Line Up" })
+   map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move Line Down" })
+   map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move Line Up" })
+   map("v", "<A-j>", ":m '>+1<CR>gv-gv", { desc = "Move Lines Down" })
+   map("v", "<A-k>", ":m '<-2<CR>gv-gv", { desc = "Move Lines Up" })
+   ```
 
-```lua
-local map = vim.keymap.set
--- ...
--- Move Lines: using `:` vs `<Cmd>` makes a difference
-map("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move Line Down" })
-map("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move Line Up" })
-map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move Line Down" })
-map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move Line Up" })
-map("v", "<A-j>", ":m '>+1<CR>gv-gv", { desc = "Move Lines Down" })
-map("v", "<A-k>", ":m '<-2<CR>gv-gv", { desc = "Move Lines Up" })
-```
+2. Highlight on yank:
 
-Highlight on yank
+   ```lua
+   vim.api.nvim_create_autocmd(
+   	"TextYankPost",
+   	{ callback = function() vim.highlight.on_yank { higroup = "IncSearch", timeout = 150 } end }
+   )
+   ```
 
-```lua
-vim.api.nvim_create_autocmd(
-	"TextYankPost",
-	{ callback = function() vim.highlight.on_yank { higroup = "IncSearch", timeout = 150 } end }
-)
-```
+3. A command to clear registers could look like
 
-A command to clear registers could look like:
+   ```lua
+   vim.api.nvim_create_user_command("WipeRegisters", function()
+   	vim.cmd "for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor"
+   	vim.cmd "wshada!"
+   end, { desc = "Clear All Registers" })
+   ```
 
-```lua
-vim.api.nvim_create_user_command("WipeRegisters", function()
-	vim.cmd "for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor"
-	vim.cmd "wshada!"
-end, { desc = "Clear All Registers" })
-```
+</details>
 
 ## Justification
 
 There are dozen of plugins that deal with VIMs yanks and registers so why another one?
 
-- This plugin is rather a complementary helper than a competitor. E.g., other plugins to use it with:
+- karen-yank.nvim is rather a complementary helper than a competitor. E.g., other plugins to use it with:
   - [`registers.nvim`][20] for a general enhancement of interaction with registers
   - [`Telescope`][30]'s `registers` subcommand for fuzzy searching register contents
   - Any clipboard manager for your OS
