@@ -39,7 +39,7 @@ end
 
 ---@param key string
 function M.handle_delete(key)
-	if vim.api.nvim_command_output("ec v:register"):match "%w" then return key end
+	if vim.v.register:match "%w" then return key end
 	return '"_' .. key
 end
 
@@ -47,7 +47,7 @@ end
 ---@param num_reg_opts NumberRegOpts
 function M.handle_cut(key, num_reg_opts)
 	handle_num_regs(num_reg_opts)
-	return key
+	return '"0' .. key
 end
 
 ---@param key string
