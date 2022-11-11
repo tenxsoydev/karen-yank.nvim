@@ -17,10 +17,16 @@ local function handle_num_regs(num_reg_opts)
 end
 
 ---@param transitory_reg TransitoryRegOpts
-function M.handle_duplicates(transitory_reg)
+---@param trim_whitespace boolean
+function M.handle_duplicates(transitory_reg, trim_whitespace)
 	local current_yank = vim.fn.getreg(0)
+	if trim_whitespace then current_yank = current_yank:gsub("%s+", "") end
+
 	for i = 1, 9 do
-		if vim.fn.getreg(i) == current_yank then
+		local reg = vim.fn.getreg(i)
+		if trim_whitespace then reg = reg:gsub("%s+", "") end
+
+		if reg == current_yank then
 			vim.fn.setreg(i, "")
 			for x = i, 9 - i do
 				M.sync_regs(x, x + 1)

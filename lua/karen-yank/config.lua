@@ -20,7 +20,7 @@ local M = {}
 
 ---@class NumberRegOpts
 ---@field enable boolean
----@field deduplicate boolean
+---@field deduplicate { enable: boolean, no_whitespace: boolean }
 ---@field transitory_reg TransitoryRegOpts
 
 ---@class TransitoryRegOpts
@@ -48,7 +48,10 @@ local default_config = {
 	},
 	number_regs = {
 		enable = true,
-		deduplicate = true,
+		deduplicate = {
+			enable = true,
+			no_whitespace = true,
+		},
 		transitory_reg = {
 			reg = "y",
 			placeholder = "👩🏼",
