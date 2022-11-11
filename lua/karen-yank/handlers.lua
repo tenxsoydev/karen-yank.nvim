@@ -2,10 +2,10 @@ local M = {}
 
 ---@param reg_one string|number
 ---@param reg_two string|number
-local function sync_regs(reg_one, reg_two) vim.cmd(string.format("let @%s=@%s", reg_one, reg_two)) end
+local function sync_regs(reg_one, reg_two) vim.fn.setreg(reg_one, vim.fn.getreg(reg_two)) end
 
 ---@param transitory_reg TransitoryRegOpts
-local function handle_duplicates(transitory_reg)
+function M.handle_duplicates(transitory_reg)
 	local current_yank = vim.fn.getreg(0)
 	for i = 1, 9 do
 		local reg = vim.fn.getreg(i)
@@ -31,12 +31,6 @@ local function handle_num_regs(num_reg_opts)
 	while x > 0 do
 		sync_regs(x, x - 1)
 		x = x - 1
-	end
-
-	if num_reg_opts.deduplicate then
-		vim.loop
-			.new_timer()
-			:start(50, 0, vim.schedule_wrap(function() handle_duplicates(num_reg_opts.transitory_reg) end))
 	end
 end
 

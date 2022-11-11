@@ -66,6 +66,7 @@ function M.set_maps(config)
 		end
 	end
 
+	if vim.o.clipboard ~= "unnamedplus" then return end
 	for key, desc in pairs(reg_keys.yanking) do
 		if key == "Y" then key = "y$" end
 		map(
