@@ -94,8 +94,8 @@ require("karen-yank").setup {
 		},
 	},
 	mappings = {
-		-- The key that controls usage of registers - will probably talk to the manager when things don't work as intended
-		-- You can map e.g., "<leader><leader>" if you are using the plugin inverted(black_whole_default=false)
+		-- The key that controls use of registers (and probably talks to the manager when things doesn't work as intended)
+		-- You can map e.g., "<leader><leader>" if you use the plugin inverted(black_whole_default=false)
 		karen = "y",
 		-- Unused keys possible values: { "d", "D", "c", "C", "x", "X", "s", "S" },
 		-- "S" / "s" are often utilized for plugins like surround or hop. Therefore, they are not used by default

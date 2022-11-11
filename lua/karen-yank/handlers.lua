@@ -78,10 +78,10 @@ end
 ---@param num_reg_opts NumberRegOpts
 function M.handle_paste(key, paste_opts, num_reg_opts)
 	if paste_opts.black_hole_default then return key end
-	if num_reg_opts.enable then
-		handle_num_regs(num_reg_opts)
-		key = '"0ygv' .. key
-	end
+
+	handle_num_regs(num_reg_opts)
+	if num_reg_opts.enable then key = '"0ygv' .. key end
+
 	if paste_opts.preserve_selection then key = key .. "`[v`]" end
 
 	return key
