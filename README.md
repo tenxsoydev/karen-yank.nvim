@@ -12,9 +12,9 @@ Karen Yank<br>
 
 With the plugin's default configuration, deletions will only populate registers / your clipboard when intended.
 
-E.g., `d` will **delete** (into the black hole register `"_`) by default and **cut** in a `yd` key-chord. Therefore, `p` will use only the last cut text, the contents of your system clipboard, or a register specified before pasting.
+Delete keys like `d`, `D`, `c` etc. will **delete** (into the black hole register `"_`) and **cut** in a `<karen><delete key>` key-chord (e.g., `yd`). Therefore, `p` will use only the last cut text, the contents of your system clipboard, or a register specified before pasting.
 
-The rest stays true to VIMs defaults:
+The mappings stay true to VIMs defaults:
 
 - a _motion_ like `ciw` will delete a word and start insert, while `yciw` will cut a word and start insert. `dd` deletes a line, `ydd` cuts a line etc.
 - in _visual_ mode `yd` pressed in \*`timeoutlen` will cut. While just `y` will yank as usual after `timeoutlen` (or immediately when followed by something like a movement with `j`. So no impairments with fast typing)
@@ -75,10 +75,15 @@ require("karen-yank").setup {
 		preserve_selection = false,
 	},
 	number_regs = {
-		-- Use number registers for yanks
+		-- Use number registers for yanks and cuts
 		enable = true,
 		-- Prevent populating multiple number registers with the same entries
-		deduplicate = true,
+		deduplicate = {
+			enable = true,
+			-- Trim white space around texts. In deduplication of VIMs number registers this results in e.g.,
+			-- `yD` pressed at the beginning of a line to be considered a duplicate of `dd` pressed in the same line
+			no_whitespace = true,
+		},
 		-- For some conditions karen will use a transitory register
 		transitory_reg = {
 			-- Register to use
@@ -101,14 +106,16 @@ require("karen-yank").setup {
 
 ## Additional Info
 
-Karen was designed mainly with the mind of using nvim in sync with the system clipboard ("unnamedplus"). Other modes may be subject to shortcomings.
+Karen is mainly designed to be used with nvim in conjunction with the system clipboard ("unnamedplus"). For other modes, not all functions of the plugin may work. But please do not hesitate to reach out if you experience unexpected behavior with the mode you are using.
 
 <details>
 <summary><i>Plugin-related functionalities</i></summary>
 
 Since there is no real API, the configuration strives to provide all the options on which a user could potentially fall short if he tries to customize the plugin's behavior.
 
-However, creating an extended set of predefined commands and keyboard mappings was not considered appropriate, as they can be created in nvim's own configuration with maximum customizability. E.g.,
+There are many mappings and customizations related to the cut, yank, delete actions that can further expand the workflows in which Karen can be used.
+However, creating an extended set of predefined commands and keyboard mappings was not considered appropriate, as they can be created in nvim's own configuration with maximum customizability.
+To give three simple examples:
 
 1. As `ddp` and `ddP` is sometimes used to move lines down / up.
    One could use `<A-j>` and `<A-k>` to move lines and ranges.
@@ -125,7 +132,7 @@ However, creating an extended set of predefined commands and keyboard mappings w
    map("v", "<A-k>", ":m '<-2<CR>gv-gv", { desc = "Move Lines Up" })
    ```
 
-2. Highlight on yank:
+2. Highlight on yank
 
    ```lua
    vim.api.nvim_create_autocmd(
