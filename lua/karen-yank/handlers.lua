@@ -44,44 +44,40 @@ function M.handle_delete(key_lhs)
 	return key_rhs
 end
 
----@param key_lhs string
+---@param key string
 ---@param yank_opts YankOpts
 ---@param num_reg_opts NumberRegOpts
-function M.handle_yank(key_lhs, yank_opts, num_reg_opts)
-	local key_rhs = key_lhs
-
+function M.handle_yank(key, yank_opts, num_reg_opts)
 	handle_num_regs(num_reg_opts)
 
 	local mode = vim.api.nvim_get_mode()["mode"]
-	if mode == "n" then return key_rhs end
+	if mode == "n" then return key end
 
 	if yank_opts.preserve_selection then
-		key_rhs = key_rhs .. "gv"
-		return key_rhs
+		key = key .. "gv"
+		return key
 	end
 
 	if yank_opts.preserve_cursor then
-		if mode == "v" then key_rhs = key_rhs .. "gvv" end
-		if mode == "V" then key_rhs = key_rhs .. "gvvv" end
+		if mode == "v" then key = key .. "gvv" end
+		if mode == "V" then key = key .. "gvvv" end
 	end
 
-	return key_rhs
+	return key
 end
 
----@param key_lhs string
+---@param key string
 ---@param paste_opts PasteOpts
 ---@param num_reg_opts NumberRegOpts
-function M.handle_paste(key_lhs, paste_opts, num_reg_opts)
-	local key_rhs = key_lhs
-
-	if paste_opts.black_hole_default then return key_rhs end
+function M.handle_paste(key, paste_opts, num_reg_opts)
+	if paste_opts.black_hole_default then return key end
 	if num_reg_opts.enable then
 		handle_num_regs(num_reg_opts)
-		key_rhs = '"0ygv' .. key_rhs
+		key = '"0ygv' .. key
 	end
-	if paste_opts.preserve_selection then key_rhs = key_rhs .. "`[v`]" end
+	if paste_opts.preserve_selection then key = key .. "`[v`]" end
 
-	return key_rhs
+	return key
 end
 
 return M

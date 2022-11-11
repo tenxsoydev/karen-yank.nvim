@@ -19,8 +19,8 @@ local reg_keys = {
 	},
 	yanking = {
 		y = "Yank Motion",
-		yy = "Yank Rest of Line",
-		Y = "Yank Line",
+		Y = "Yank Rest of Line",
+		yy = "Yank Line",
 	},
 }
 
@@ -38,11 +38,18 @@ function M.set_maps(config)
 
 		if not config.on_delete.black_hole_default then
 			map({ "n", "v" }, config.mappings.karen .. key, '"_' .. key, { desc = desc })
+			if key == "X" then map("v", config.mappings.karen .. key, '"_' .. key, { desc = "Delete Line" }) end
 			goto continue
 		end
 
 		map({ "n", "v" }, key, function() return handlers.handle_delete(key) end, { expr = true, desc = desc })
-		map({ "n", "v" }, config.mappings.karen .. key, key, { desc = "Yank and " .. desc })
+		map({ "n", "v" }, config.mappings.karen .. key, key, { desc = desc .. " Into Register" })
+
+		if key == "X" then
+			desc = "Delete Line"
+			map("v", key, function() return handlers.handle_delete(key) end, { expr = true, desc = desc })
+			map("v", config.mappings.karen .. key, key, { desc = desc .. " Into Register" })
+		end
 
 		::continue::
 	end
