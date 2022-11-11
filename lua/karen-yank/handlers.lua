@@ -19,8 +19,7 @@ end
 function M.handle_duplicates(transitory_reg)
 	local current_yank = vim.fn.getreg(0)
 	for i = 1, 9 do
-		local reg = vim.fn.getreg(i)
-		if reg == current_yank then
+		if vim.fn.getreg(i) == current_yank then
 			vim.fn.setreg(i, "")
 			if i ~= 9 then M.sync_regs(transitory_reg.reg, 9) end
 			for x = i, 8 do
