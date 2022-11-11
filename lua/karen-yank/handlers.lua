@@ -9,6 +9,7 @@ local function handle_num_regs(num_reg_opts)
 	if vim.api.nvim_command_output("ec v:register"):match "%w" or not num_reg_opts.enable then return end
 
 	local x = 9
+	if vim.fn.getreg(9) ~= "" then M.sync_regs(num_reg_opts.transitory_reg.reg, 9) end
 	while x > 0 do
 		M.sync_regs(x, x - 1)
 		x = x - 1
@@ -21,14 +22,11 @@ function M.handle_duplicates(transitory_reg)
 	for i = 1, 9 do
 		if vim.fn.getreg(i) == current_yank then
 			vim.fn.setreg(i, "")
-			if i ~= 9 then M.sync_regs(transitory_reg.reg, 9) end
-			for x = i, 8 do
+			for x = i, 9 - i do
 				M.sync_regs(x, x + 1)
 			end
-			if i ~= 9 then
-				M.sync_regs(9, transitory_reg.reg)
-				if transitory_reg.placeholder then vim.fn.setreg(transitory_reg.reg, transitory_reg.placeholder) end
-			end
+			if vim.fn.getreg(9) ~= "" then M.sync_regs(9, transitory_reg.reg) end
+			if transitory_reg.placeholder then vim.fn.setreg(transitory_reg.reg, transitory_reg.placeholder) end
 		end
 	end
 end
