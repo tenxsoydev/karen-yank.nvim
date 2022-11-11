@@ -80,8 +80,8 @@ require("karen-yank").setup {
 		-- Prevent populating multiple number registers with the same entries
 		deduplicate = {
 			enable = true,
-			-- Trim white space around texts. In deduplication of VIMs number registers this results in e.g.,
-			-- `yD` pressed at the beginning of a line to be considered a duplicate of `dd` pressed in the same line
+			-- Trim white space around texts. When handling duplicates in VIMs number registers this results in e.g.,
+			-- `yD` pressed at the beginning of a line to be considered a duplicate of `ydd` pressed in the same line
 			no_whitespace = true,
 		},
 		-- For some conditions karen will use a transitory register
