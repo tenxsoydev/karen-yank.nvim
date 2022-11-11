@@ -2,7 +2,18 @@ local M = {}
 
 ---@param reg_one string|number
 ---@param reg_two string|number
-local function sync_regs(reg_one, reg_two) vim.fn.setreg(reg_one, vim.fn.getreg(reg_two)) end
+function M.sync_regs(reg_one, reg_two) vim.fn.setreg(reg_one, vim.fn.getreg(reg_two)) end
+
+---@param num_reg_opts NumberRegOpts
+local function handle_num_regs(num_reg_opts)
+	if vim.api.nvim_command_output("ec v:register"):match "%w" or not num_reg_opts.enable then return end
+
+	local x = 9
+	while x > 0 do
+		M.sync_regs(x, x - 1)
+		x = x - 1
+	end
+end
 
 ---@param transitory_reg TransitoryRegOpts
 function M.handle_duplicates(transitory_reg)
@@ -11,37 +22,29 @@ function M.handle_duplicates(transitory_reg)
 		local reg = vim.fn.getreg(i)
 		if reg == current_yank then
 			vim.fn.setreg(i, "")
-			if i ~= 9 then sync_regs(transitory_reg.reg, 9) end
+			if i ~= 9 then M.sync_regs(transitory_reg.reg, 9) end
 			for x = i, 8 do
-				sync_regs(x, x + 1)
+				M.sync_regs(x, x + 1)
 			end
 			if i ~= 9 then
-				sync_regs(9, transitory_reg.reg)
+				M.sync_regs(9, transitory_reg.reg)
 				if transitory_reg.placeholder then vim.fn.setreg(transitory_reg.reg, transitory_reg.placeholder) end
 			end
 		end
 	end
 end
 
----@param num_reg_opts NumberRegOpts
-local function handle_num_regs(num_reg_opts)
-	if vim.api.nvim_command_output("ec v:register"):match "%w" or not num_reg_opts.enable then return end
-
-	local x = 9
-	while x > 0 do
-		sync_regs(x, x - 1)
-		x = x - 1
-	end
+---@param key string
+function M.handle_delete(key)
+	if vim.api.nvim_command_output("ec v:register"):match "%w" then return key end
+	return '"_' .. key
 end
 
----@param key_lhs string
-function M.handle_delete(key_lhs)
-	local key_rhs = key_lhs
-
-	if vim.api.nvim_command_output("ec v:register"):match "%w" then return key_rhs end
-
-	key_rhs = '"_' .. key_rhs
-	return key_rhs
+---@param key string
+---@param num_reg_opts NumberRegOpts
+function M.handle_cut(key, num_reg_opts)
+	handle_num_regs(num_reg_opts)
+	return key
 end
 
 ---@param key string
@@ -49,6 +52,7 @@ end
 ---@param num_reg_opts NumberRegOpts
 function M.handle_yank(key, yank_opts, num_reg_opts)
 	handle_num_regs(num_reg_opts)
+	if key == "Y" then key = "y$" end
 
 	local mode = vim.api.nvim_get_mode()["mode"]
 	if mode == "n" then return key end

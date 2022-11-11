@@ -26,7 +26,12 @@ function M.set_maps(config)
 		end
 
 		map({ "n", "v" }, key, function() return handlers.handle_delete(key) end, { expr = true })
-		map({ "n", "v" }, config.mappings.karen .. key, key)
+		map(
+			{ "n", "v" },
+			config.mappings.karen .. key,
+			function() return handlers.handle_cut(key, config.number_regs) end,
+			{ expr = true }
+		)
 
 		::continue::
 	end
@@ -51,7 +56,6 @@ function M.set_maps(config)
 
 	if vim.o.clipboard ~= "unnamedplus" then return end
 	for _, key in pairs(reg_keys.yank) do
-		if key == "Y" then key = "y$" end
 		map(
 			"",
 			key,

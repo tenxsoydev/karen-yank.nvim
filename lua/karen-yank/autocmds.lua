@@ -1,12 +1,12 @@
 local M = {}
 
----@param number_reg_opts NumberRegOpts
-function M.set_aus(number_reg_opts)
+---@param num_reg_opts NumberRegOpts
+function M.set_aus(num_reg_opts)
 	if vim.o.clipboard ~= "unnamedplus" then
 		vim.api.nvim_create_autocmd("TextYankPost", {
 			callback = function()
-				if number_reg_opts.deduplicate then
-					require("karen-yank.handlers").handle_duplicates(number_reg_opts.transitory_reg)
+				if num_reg_opts.deduplicate then
+					require("karen-yank.handlers").handle_duplicates(num_reg_opts.transitory_reg)
 				end
 			end,
 		})
@@ -14,14 +14,13 @@ function M.set_aus(number_reg_opts)
 		return
 	end
 
-	if number_reg_opts.enable then
+	if num_reg_opts.enable then
 		vim.api.nvim_create_autocmd("TextYankPost", {
 			pattern = { "*", "+" },
 			callback = function()
-				vim.fn.setreg(0, vim.fn.getreg "+")
-
-				if number_reg_opts.deduplicate then
-					require("karen-yank.handlers").handle_duplicates(number_reg_opts.transitory_reg)
+				require("karen-yank.handlers").sync_regs(0, "+")
+				if num_reg_opts.deduplicate then
+					require("karen-yank.handlers").handle_duplicates(num_reg_opts.transitory_reg)
 				end
 			end,
 		})
