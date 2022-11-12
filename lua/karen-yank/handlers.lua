@@ -21,37 +21,33 @@ local function handle_num_regs(num_reg_opts)
 end
 
 ---@param transitory_reg TransitoryRegOpts
----@param trim_whitespace boolean
-function M.handle_duplicates(transitory_reg, trim_whitespace)
-	local hash = {}
-	local res = {}
-	local regs = {}
-	-- local regs_trimmed = {}
-
+---@param ignore_whitespace boolean
+function M.handle_duplicates(transitory_reg, ignore_whitespace)
 	-- get current regs
+	local regs = {}
 	for i = 0, 9 do
 		regs[#regs + 1] = vim.fn.getreg(i)
 	end
 
 	-- deduplicate
-	for _, v in ipairs(regs) do
-		if not hash[v] then
-			res[#res + 1] = vim.fn.setreg(#res, v)
-			hash[v] = true
+	local seen = {}
+	for i, reg in ipairs(regs) do
+		if ignore_whitespace then reg = reg:gsub("%s+", "") end
+		if seen[reg] then
+			table.remove(regs, i)
+		else
+			seen[reg] = true
 		end
 	end
 
-	-- clear up regs that go beyond the deduplication result
-	for i = #res, 9 do
-		vim.fn.setreg(i, "")
+	-- set deduplicated regs
+	for i, reg in ipairs(regs) do
+		vim.fn.setreg(i - 1, reg)
 	end
 
 	-- restore last register
-	if vim.fn.getreg "9" == "" or vim.fn.getreg "9" == vim.fn.getreg "8" then
+	if vim.fn.getreg(8) ~= "" and (vim.fn.getreg(9) == "" or vim.fn.getreg(9) == vim.fn.getreg(8)) then
 		M.sync_regs(9, transitory_reg.reg)
-		vim.fn.setreg(transitory_reg.reg, transitory_reg.placeholder)
-	else
-		vim.fn.setreg(transitory_reg.reg, transitory_reg.placeholder)
 	end
 end
 
