@@ -37,21 +37,14 @@ function M.set_maps(config)
 	end
 
 	for _, key in pairs(reg_keys.paste) do
+		if config.on_paste.black_hole_default then map("v", config.mappings.karen .. key, key) end
+
 		map(
 			"v",
 			key,
 			function() return handlers.handle_paste(key, config.on_paste, config.number_regs) end,
 			{ expr = true }
 		)
-
-		if config.on_paste.black_hole_default then
-			map(
-				"v",
-				config.mappings.karen .. key,
-				function() return handlers.handle_paste(key, config.on_paste, config.number_regs) end,
-				{ expr = true }
-			)
-		end
 	end
 
 	for _, key in pairs(reg_keys.yank) do
