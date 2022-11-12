@@ -97,7 +97,6 @@ end
 function M.handle_paste(key, paste_opts, num_reg_opts)
 	handle_num_regs(num_reg_opts)
 
-	if paste_opts.black_hole_default then key = '<esc>gvo"_dP' end
 	if paste_opts.preserve_selection then key = key .. "`[v`]" end
 
 	return key
