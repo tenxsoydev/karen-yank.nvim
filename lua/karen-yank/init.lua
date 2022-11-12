@@ -1,3 +1,8 @@
+--[[ 
+Source: https://github.com/tenxsoydev/karen-yank.nvim 
+License: GNU GPLv3
+]]
+
 local M = {}
 
 ---@param user_config? Config
