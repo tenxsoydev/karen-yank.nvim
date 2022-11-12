@@ -69,7 +69,7 @@ require("karen-yank").setup {
 		preserve_selection = false,
 	},
 	on_paste = {
-		-- True: paste-over-selection will delete replaced text without moving it into a register - Vim default.
+		-- True: paste-over-selection will delete replaced text without moving it into a register
 		-- False: paste-over-selection will move the replaced text into a register
 		black_hole_default = true,
 		preserve_selection = false,
@@ -89,7 +89,6 @@ require("karen-yank").setup {
 			-- Register to use
 			reg = "y",
 			-- Placeholder with which the register will be filled after use
-			-- E.g. possible values are '""' to clear it or 'false' to leave the transient content
 			placeholder = "👩🏼",
 		},
 	},

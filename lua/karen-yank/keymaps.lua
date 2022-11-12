@@ -10,6 +10,7 @@ local reg_keys = {
 
 ---@param config Config
 function M.set_maps(config)
+	-- set keys for deletes / cuts
 	local unused_keys = {}
 	for _, key in ipairs(config.mappings.unused) do
 		unused_keys[key] = true
@@ -36,6 +37,7 @@ function M.set_maps(config)
 		::continue::
 	end
 
+	-- set maps for pastes over selection
 	for _, key in pairs(reg_keys.paste) do
 		if config.on_paste.black_hole_default then map("v", config.mappings.karen .. key, key) end
 
@@ -47,6 +49,7 @@ function M.set_maps(config)
 		)
 	end
 
+	-- set keys for yanks
 	for _, key in pairs(reg_keys.yank) do
 		map(
 			"",
