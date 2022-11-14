@@ -1,5 +1,5 @@
---[[ 
-Source: https://github.com/tenxsoydev/karen-yank.nvim 
+--[[
+Source: https://github.com/tenxsoydev/karen-yank.nvim
 License: GNU GPLv3
 ]]
 

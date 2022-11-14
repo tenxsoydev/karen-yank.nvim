@@ -5,21 +5,19 @@ Karen Yank<br>
 
 ## Main idea
 
-- Enhance Neovims behavior related to `delete` and `yank` mappings without new mental overhead
-- Make the usage of registers more intentional
+- Enhance Neovims behavior related to `delete` and `yank` mappings.
+- Make the use of registers more intentional while remaining intuitive for both experienced and new VIM users.
 
 ## Usage
 
-With the plugin's default configuration, deletions will only populate registers / your clipboard when intended.
-
-Delete keys like `d`, `D`, `c` etc. will **delete** (into the black hole register `"_`) and **cut** in a `<karen><delete key>` key-chord (e.g., `yd`). Therefore, `p` will use only the last cut text, the contents of your system clipboard, or a register specified before pasting.
+With [karen-yank.nvim][00] delete keys like `d`, `D`, `c` etc. will **delete** (into the black hole register `"_`) and **cut** in a `<karen><delete key>` key-chord (e.g., `yd`). This results in `p` using only the last cut text, the contents of your system clipboard, or a register specified before pasting. Your yanks and cuts can also use VIMs number registers while keeping them free of duplicates.
 
 The mappings stay true to VIMs defaults:
 
 - a _motion_ like `ciw` will delete a word and start insert, while `yciw` will cut a word and start insert. `dd` deletes a line, `ydd` cuts a line etc.
 - in _visual_ mode `yd` pressed in \*`timeoutlen` will cut. While just `y` will yank as usual after `timeoutlen` (or immediately when followed by something like a movement with `j`. So no impairments with fast typing)
 
-To invert the functionality i.e., using `<karen>d` to delete into the black hole register, check the config section.
+<sub>To invert the functionality i.e., using `<karen>d` to delete into the black hole register, check the config section.</sub>
 
 <details>
 
@@ -77,8 +75,8 @@ require("karen-yank").setup {
 	number_regs = {
 		-- Use number registers for yanks and cuts
 		enable = true,
-		-- Prevent populating multiple number registers with the same entries
 		deduplicate = {
+			-- Prevent populating multiple number registers with the same entries
 			enable = true,
 			-- Trim white space around texts. When handling duplicates in VIMs number registers this results in e.g.,
 			-- `yD` pressed at the beginning of a line to be considered a duplicate of `ydd` pressed in the same line
@@ -122,13 +120,18 @@ To give three simple examples:
    ```lua
    local map = vim.keymap.set
    -- ...
-   -- Move Lines: using `:` vs `<Cmd>` makes a difference
-   map("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move Line Down" })
-   map("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move Line Up" })
+   -- Move Lines (using `:` vs `<Cmd>` makes a difference)
    map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move Line Down" })
    map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move Line Up" })
+   map("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move Line Down" })
+   map("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move Line Up" })
    map("v", "<A-j>", ":m '>+1<CR>gv-gv", { desc = "Move Lines Down" })
    map("v", "<A-k>", ":m '<-2<CR>gv-gv", { desc = "Move Lines Up" })
+   -- Duplicate Lines
+   map("n", "<A-S-j>", '"dyy"dp', { desc = "Duplicate Line Down" })
+   map("n", "<A-S-k>", '"dyy"dP', { desc = "Duplicate Line Up" })
+   map("v", "<A-S-j>", "\"dy']\"dp`]'[V']", { desc = "Duplicate Lines Down" })
+   map("v", "<A-S-k>", "\"dy\"dP'[V']", { desc = "Duplicate Lines Up" })
    ```
 
 2. Highlight on yank
@@ -162,6 +165,7 @@ There are dozen of plugins that deal with VIMs yanks and registers so why anothe
 - It was already finished: The UX this plugin provides was a part of my vim config since its pre-lua days.
   Wrapping it up in a plugin and making it public for other strangers like me was just a matter of making some of its functionalities configurable - _hoping not to have messed anything up along the way_.
 
+[00]: https://github.com/tenxsoydev/karen-yank.nvim#karen-yank-
 [10]: https://github.com/wbthomason/packer.nvim
 [20]: https://github.com/tversteeg/registers.nvim
 [30]: https://github.com/nvim-telescope/telescope.nvim
