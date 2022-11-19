@@ -91,7 +91,7 @@ require("karen-yank").setup {
 		},
 	},
 	mappings = {
-		-- The key that controls use of registers (and probably talks to the manager when things doesn't work as intended)
+		-- The key that controls the use of registers (and probably talks to the manager when things doesn't work as intended)
 		-- You can map e.g., "<leader><leader>" if you use the plugin inverted(black_whole_default=false)
 		karen = "y",
 		-- Unused keys possible values: { "d", "D", "c", "C", "x", "X", "s", "S" },
@@ -110,9 +110,8 @@ Karen is mainly designed to be used with nvim in conjunction with the system cli
 
 Since there is no real API, the configuration strives to provide all the options on which a user could potentially fall short if he tries to customize the plugin's behavior.
 
-There are many mappings and customizations related to the cut, yank, delete actions that can further expand the workflows in which Karen can be used.
-However, creating an extended set of predefined commands and keyboard mappings was not considered appropriate, as they can be created in nvim's own configuration with maximum customizability.
-To give three simple examples:
+Of course, there are other mappings and adjustments related to the cut, yank, delete actions that can further expand the workflows in which Karen can be used.
+However, creating an extended set of predefined commands and keyboard mappings was not considered appropriate, as they can be created in nvim's own configuration with maximum customizability. To give three simple examples:
 
 1. As `ddp` and `ddP` is sometimes used to move lines down / up.
    One could use `<A-j>` and `<A-k>` to move lines and ranges.
