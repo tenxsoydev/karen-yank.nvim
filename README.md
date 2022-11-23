@@ -10,7 +10,7 @@ Karen Yank<br>
 
 ## Usage
 
-With [karen-yank.nvim][00] delete keys like `d`, `D`, `c` etc. will **delete** (into the black hole register `"_`) and **cut** in a `<karen><delete key>` key-chord (e.g., `yd`). This results in `p` using only the last cut text, the contents of your system clipboard, or a register specified before pasting. Your yanks and cuts can also use VIMs number registers while keeping them free of duplicates.
+With [karen-yank.nvim][00] delete keys like `d`, `D`, `c` etc. will genuinely **delete** by default (into the black hole register `"_`), and **cut** in a `<karen><delete key>` key-chord (e.g., `yd`). This results in `p` using only the last cut text, the contents of your system clipboard, or a register specified before pasting. Your yanks and cuts can also use VIMs number registers while keeping them free of duplicates.
 
 The mappings stay true to VIMs defaults:
 
@@ -155,7 +155,7 @@ However, creating an extended set of predefined commands and keyboard mappings w
 
 ## Justification
 
-There are dozen of plugins that deal with VIMs yanks and registers so why another one?
+There are a dozen of plugins that deal with VIMs yanks and registers so why another one?
 
 - karen-yank.nvim is rather a complementary helper than a competitor. E.g., other plugins to use it with:
   - [`registers.nvim`][20] for a general enhancement of interaction with registers
