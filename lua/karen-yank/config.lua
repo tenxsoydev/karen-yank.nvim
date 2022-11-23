@@ -63,7 +63,7 @@ local default_config = {
 	},
 }
 
----@param user_config Config|table
+---@param user_config Config
 ---@return Config
 function M.merge(user_config) return vim.tbl_deep_extend("keep", user_config, default_config) end
 
