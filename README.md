@@ -56,49 +56,49 @@ Defaults:
 
 ```lua
 require("karen-yank").setup {
-	on_delete = {
-		-- True: delete into "_ by default; use regular registers with karen key
-		-- False: use regular registers by default; delete into "_ with karen key
-		black_hole_default = true,
-	},
-	on_yank = {
-		-- Preserve cursor position on yank
-		preserve_cursor = true,
-		preserve_selection = false,
-	},
-	on_paste = {
-		-- True: paste-over-selection will delete replaced text without moving it into a register
-		-- False: paste-over-selection will move the replaced text into a register
-		black_hole_default = true,
-		preserve_selection = false,
-	},
-	number_regs = {
-		-- Use number registers for yanks and cuts
-		enable = true,
-		deduplicate = {
-			-- Prevent populating multiple number registers with the same entries
-			enable = true,
-			-- Trim white space around texts. When handling duplicates in VIMs number registers this results in e.g.,
-			-- `yD` pressed at the beginning of a line to be considered a duplicate of `ydd` pressed in the same line
-			ignore_whitespace = true,
-		},
-		-- For some conditions karen will use a transitory register
-		transitory_reg = {
-			-- Register to use
-			reg = "y",
-			-- Placeholder with which the register will be filled after use
-			placeholder = "👩🏼",
-		},
-	},
-	mappings = {
-		-- The key that controls the use of registers (and probably talks to the manager when things doesn't work as intended)
-		-- You can map e.g., "<leader><leader>" if you use the plugin inverted(black_whole_default=false)
-		karen = "y",
-		-- Unused keys possible values: { "d", "D", "c", "C", "x", "X", "s", "S" },
-		-- "S" / "s" are often utilized for plugins like surround or hop. Therefore, they are not used by default
-		unused = { "s", "S" },
-	},
+  on_delete = {
+    -- True: delete into "_ by default; use regular registers with karen key
+    -- False: use regular registers by default; delete into "_ with karen key
+    black_hole_default = true,
+  },
+  on_yank = {
+    -- Preserve cursor position on yank
+    preserve_cursor = true,
+    preserve_selection = false,
+  },
+  on_paste = {
+    -- True: paste-over-selection will delete replaced text without moving it into a register
+    -- False: paste-over-selection will move the replaced text into a register
+    black_hole_default = true,
+    preserve_selection = false,
+  },
+  number_regs = {
+    -- Use number registers for yanks and cuts
+    enable = true,
+    deduplicate = {
+      -- Prevent populating multiple number registers with the same entries
+      enable = true,
+      -- Causes e.g. yD pressed at the beginning of a line to be considered a duplicate of ydd pressed in the same line
+      ignore_whitespace = true,
+    },
+    -- For some conditions karen will use a transitory register
+    transitory_reg = {
+      -- Register to use
+      reg = "y",
+      -- Placeholder with which the register will be filled after use
+      placeholder = "👩🏼",
+    },
+  },
+  mappings = {
+    -- The key that controls the use of registers (and probably talks to the manager when things doesn't work as intended)
+    -- You can map e.g., "<leader><leader>" if you use the plugin inverted(black_whole_default=false)
+    karen = "y",
+    -- Unused keys possible values: { "d", "D", "c", "C", "x", "X", "s", "S" },
+    -- "S" / "s" are often utilized for plugins like surround or hop. Therefore, they are not used by default
+    unused = { "s", "S" },
+  },
 }
+
 ```
 
 ## Additional Info
@@ -161,7 +161,7 @@ There are a dozen of plugins that deal with VIMs yanks and registers so why anot
   - [`registers.nvim`][20] for a general enhancement of interaction with registers
   - [`Telescope`][30]'s `registers` subcommand for fuzzy searching register contents
   - Any clipboard manager for your OS
-- It was already finished: The UX this plugin provides was a part of my vim config since its pre-lua days.
+- It was already finished: Most of the UX this plugin provides was a part of my vim config since its pre-lua days.
   Wrapping it up in a plugin and making it public for other strangers like me was just a matter of making some of its functionalities configurable - _hoping not to have messed anything up along the way_.
 
 [00]: https://github.com/tenxsoydev/karen-yank.nvim#karen-yank-
