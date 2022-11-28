@@ -101,11 +101,14 @@ end
 ---@param key string
 ---@param paste_opts PasteOpts
 function M.handle_paste(key, paste_opts)
+	-- yank selection to the transitory register to restore it to the system clipbaord after pasting
+	key = '"yygv' .. key
+
 	if paste_opts.preserve_selection then key = key .. "`[v`]" end
 
+	-- set system clipboard to previous selection
 	M.lazy(function() M.sync_regs("+", "y") end)
-
-	return '"yygv' .. key
+	return key
 end
 
 return M
