@@ -56,18 +56,18 @@ function M.set_maps(config)
 	-- set maps for pastes over selection
 	for key, desc in pairs(reg_keys.paste) do
 		if config.on_paste.black_hole_default then
-			map("v", config.mappings.karen .. key, "p", { desc = desc .. " and Yank Selection Into Register" })
+			map("v", key, '"_dP', { desc = desc .. " and Delete Selection" })
 			map(
 				"v",
-				key,
-				function() return handlers.handle_paste('<esc>gvo"_dP', config.on_paste, config.number_regs) end,
-				{ expr = true, desc = desc .. " and Delete Selection" }
+				config.mappings.karen .. key,
+				function() return handlers.handle_paste("p", config.on_paste) end,
+				{ expr = true, desc = desc .. " and Yank Selection Into Register" }
 			)
 		else
 			map(
 				"v",
 				key,
-				function() return handlers.handle_paste(key, config.on_paste, config.number_regs) end,
+				function() return handlers.handle_paste(key, config.on_paste) end,
 				{ expr = true, desc = desc .. " and Delete Selection" }
 			)
 		end
