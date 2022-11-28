@@ -1,8 +1,15 @@
 local M = {}
 
----@param reg_one string|number
----@param reg_two string|number
-function M.sync_regs(reg_one, reg_two) vim.fn.setreg(reg_one, vim.fn.getreg(reg_two)) end
+---@param set_reg string|number
+---@param get_reg string|number
+function M.sync_regs(set_reg, get_reg) vim.fn.setreg(set_reg, vim.fn.getreg(get_reg)) end
+
+---@param fn fun()
+---@param add_timeout? number
+function M.lazy(fn, add_timeout)
+	add_timeout = (add_timeout or 0) + 50
+	vim.loop.new_timer():start(add_timeout, 0, vim.schedule_wrap(fn))
+end
 
 ---@param num_reg_opts NumberRegOpts
 local function handle_num_regs(num_reg_opts)
@@ -93,13 +100,12 @@ end
 
 ---@param key string
 ---@param paste_opts PasteOpts
----@param num_reg_opts NumberRegOpts
-function M.handle_paste(key, paste_opts, num_reg_opts)
-	handle_num_regs(num_reg_opts)
-
+function M.handle_paste(key, paste_opts)
 	if paste_opts.preserve_selection then key = key .. "`[v`]" end
 
-	return key
+	M.lazy(function() M.sync_regs("+", "y") end)
+
+	return '"yygv' .. key
 end
 
 return M
