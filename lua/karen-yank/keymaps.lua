@@ -57,7 +57,7 @@ function M.set_maps(config)
 	for key, desc in pairs(reg_keys.paste) do
 		if not config.on_paste.black_hole_default then return end
 
-		map("v", key, '"_dP', { desc = desc .. " and Delete Selection" })
+		map("v", key, '"_d' .. key, { desc = desc .. " and Delete Selection" })
 		map(
 			"v",
 			config.mappings.karen .. key,
