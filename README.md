@@ -10,31 +10,18 @@ Karen Yank<br>
 
 ## Usage
 
-With [karen-yank.nvim][00] delete keys like `d`, `D`, `c` etc. will genuinely **delete** by default (into the black hole register `"_`), and **cut** in a `<karen><delete key>` key-chord (e.g., `yd`). This results in `p` using only the last cut text, the contents of your system clipboard, or a register specified before pasting. Your yanks and cuts can also use VIMs number registers while keeping them free of duplicates.
+With [karen-yank.nvim][00] delete keys like <kbd>d</kbd>, <kbd>D</kbd>, <kbd>c</kbd> etc. will genuinely **delete** by default (into the black hole register `"_`), and **cut** in a `<karen><delete key>` key-chord (e.g., <kbd>yd</kbd>). This results in <kbd>p</kbd> using only the last cut text, the contents of your system clipboard, or a register specified before pasting.
+
+Your yanks and cuts are also extended to use VIMs number registers while keeping them free of duplicates
+
+### Keymaps
 
 The mappings stay true to VIMs defaults:
 
-- a _motion_ like `ciw` will delete a word and start insert, while `yciw` will cut a word and start insert. `dd` deletes a line, `ydd` cuts a line etc.
-- in _visual_ mode `yd` pressed in \*`timeoutlen` will cut. While just `y` will yank as usual after `timeoutlen` (or immediately when followed by something like a movement with `j`. So no impairments with fast typing)
+- a _motion_ like <kbd>ciw</kbd> will delete a word and start insert, while <kbd>yciw</kbd> will cut a word and start insert. <kbd>dd</kbd> deletes a line, <kbd>ydd</kbd> cuts a line etc.
+- in _visual_ mode <kbd>yd</kbd> pressed in <sup>\*</sup>`timeoutlen` will cut. While just <kbd>y</kbd> will yank as usual after `timeoutlen` (or immediately when followed by something like a movement with <kbd>j</kbd>. So no impairments with fast typing)
 
 <sub>To invert the functionality i.e., using `<karen>d` to delete into the black hole register, check the config section.</sub>
-
-<details>
-
-<summary><sub><code>*timeoutlen</code>…</sub></summary>
-
-<blockquote><sub>"Time in milliseconds to wait for a mapped sequence to complete" (default 1000ms) – vim-docs.</sub></blockquote>
-
-<sub> Adding my two cents to this VIM setting that go beyond the use of this plugin:
-</sub>
-
-<sub> From a musical point of view, one could say that this is the time interval in which a sequence of notes in an arpeggio needs to be played in order to be recognized as a chord.
-</sub>
-
-<sub> A value like `350` is suitable imo. It is usually sufficient to press the "initializing" keys of a sequence in this time frame. For this plugin this would be e.g. `yd`, then it will wait for the rest of the motion keys. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences, e.g., on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. Check `:h timeoutlen` to set it up to your preference with related settings.
-</sub>
-
-</details>
 
 ## Installation
 
@@ -106,7 +93,7 @@ require("karen-yank").setup {
 Karen is mainly designed to be used with nvim in conjunction with the system clipboard ("unnamedplus"). For other modes, not all functions of the plugin may work. But please do not hesitate to reach out if you experience unexpected behavior with the mode you are using.
 
 <details>
-<summary><i>Plugin-related functionalities</i></summary>
+<summary>Plugin-related functionalities</summary>
 
 Since there is no real API, the configuration strives to provide all the options on which a user could potentially fall short if he tries to customize the plugin's behavior.
 
@@ -153,6 +140,20 @@ However, creating an extended set of predefined commands and keyboard mappings w
 
 </details>
 
+<details>
+
+<summary><code>*timeoutlen</code>…</summary>
+
+<blockquote><sub>"Time in milliseconds to wait for a mapped sequence to complete" (default 1000ms) – <a href="https://neovim.io/doc/user/options.html#'timeoutlen'">vim-docs.</a></sub></blockquote>
+
+<sub>The way this setting works can also be described from a musical point of view. Then one could say that this is the time interval in which a sequence of notes in an arpeggio must be played in order to be recognized as a chord.
+</sub>
+
+<sub> A value like `350` is suitable imo. It is usually sufficient to press the "initializing" keys of a sequence in this time frame. For this plugin this would be e.g., `yd` in normal mode. Then it will wait for the rest of the motion. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences, e.g., on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. Check `:h timeoutlen` to set it up to your preference with related settings.
+</sub>
+
+</details>
+
 ## Justification
 
 There are a dozen of plugins that deal with VIMs yanks and registers so why another one?
@@ -165,6 +166,7 @@ There are a dozen of plugins that deal with VIMs yanks and registers so why anot
   Wrapping it up in a plugin and making it public for other strangers like me was just a matter of making some of its functionalities configurable - _hoping not to have messed anything up along the way_.
 
 [00]: https://github.com/tenxsoydev/karen-yank.nvim#karen-yank-
+[05]: https://github.com/tenxsoydev/karen-yank.nvim#additional-info
 [10]: https://github.com/wbthomason/packer.nvim
 [20]: https://github.com/tversteeg/registers.nvim
 [30]: https://github.com/nvim-telescope/telescope.nvim
