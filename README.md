@@ -12,7 +12,7 @@ Karen Yank<br>
 
 With [karen-yank.nvim][00] delete keys like <kbd>d</kbd>, <kbd>D</kbd>, <kbd>c</kbd> etc. will genuinely **delete** by default (into the black hole register `"_`), and **cut** in a `<karen><delete key>` key-chord (e.g., <kbd>yd</kbd>). This results in <kbd>p</kbd> using only the last cut text, the contents of your system clipboard, or a register specified before pasting.
 
-Your yanks and cuts are also extended to use VIMs number registers while keeping them free of duplicates
+Your yanks and cuts are also extended to use VIMs number registers while keeping them free of duplicates.
 
 ### Keymaps
 
@@ -44,8 +44,8 @@ Defaults:
 ```lua
 require("karen-yank").setup {
   on_delete = {
-    -- True: delete into "_ by default; use regular registers with karen key
-    -- False: use regular registers by default; delete into "_ with karen key
+    -- True: delete into `"_` by default and use registers with karen key
+    -- False: use registers by default and delete into `"_` with karen key
     black_hole_default = true,
   },
   on_yank = {
@@ -65,12 +65,11 @@ require("karen-yank").setup {
     deduplicate = {
       -- Prevent populating multiple number registers with the same entries
       enable = true,
-      -- Causes e.g. yD pressed at the beginning of a line to be considered a duplicate of ydd pressed in the same line
+      -- Causes e.g. `yD` pressed at the beginning of a line to be considered a duplicate of `ydd` pressed in the same line
       ignore_whitespace = true,
     },
-    -- For some conditions karen will use a transitory register
     transitory_reg = {
-      -- Register to use
+      -- Transitory register that karen will use for some actions
       reg = "y",
       -- Placeholder with which the register will be filled after use
       placeholder = "👩🏼",
@@ -78,27 +77,25 @@ require("karen-yank").setup {
   },
   mappings = {
     -- The key that controls the use of registers (and probably talks to the manager when things doesn't work as intended)
-    -- You can map e.g., "<leader><leader>" if you use the plugin inverted(black_whole_default=false)
+    -- You can map e.g., `<leader><leader>` if you use the plugin inverted
     karen = "y",
     -- Unused keys possible values: { "d", "D", "c", "C", "x", "X", "s", "S" },
     -- "S" / "s" are often utilized for plugins like surround or hop. Therefore, they are not used by default
     unused = { "s", "S" },
   },
 }
-
 ```
 
 ## Additional Info
 
-Karen is mainly designed to be used with nvim in conjunction with the system clipboard ("unnamedplus"). For other modes, not all functions of the plugin may work. But please do not hesitate to reach out if you experience unexpected behavior with the mode you are using.
+Karen is mainly designed to be used with nvim in conjunction with the system `clipboard=unnamedplus`. For other modes, not all functions of the plugin may work. If you notice unexpected behavior with the mode you are using, feel free to open an issue.
 
 <details>
 <summary>Plugin-related functionalities</summary>
 
-Since there is no real API, the configuration strives to provide all the options on which a user could potentially fall short if he tries to customize the plugin's behavior.
+Since there is no real API yet, the configuration strives to provide all the options on which a user could potentially fall short if he tries to customize the plugin's behavior.
 
-Of course, there are other mappings and adjustments related to the cut, yank, delete actions that can further expand the workflows in which Karen can be used.
-However, creating an extended set of predefined commands and keyboard mappings was not considered appropriate, as they can be created in nvim's own configuration with maximum customizability. To give three simple examples:
+The creation of an extended set of predefined keymaps and commands has been omitted, as these can be created the user's own nvim configuration with maximum customizability. To give three simple examples:
 
 1. As `ddp` and `ddP` is sometimes used to move lines down / up.
    One could use `<A-j>` and `<A-k>` to move lines and ranges.
@@ -142,15 +139,11 @@ However, creating an extended set of predefined commands and keyboard mappings w
 
 <details>
 
-<summary><code>*timeoutlen</code>…</summary>
+<summary><sup>*</sup><code>timeoutlen</code></summary>
 
-<blockquote><sub>"Time in milliseconds to wait for a mapped sequence to complete" (default 1000ms) – <a href="https://neovim.io/doc/user/options.html#'timeoutlen'">vim-docs.</a></sub></blockquote>
+<blockquote>"Time in milliseconds to wait for a mapped sequence to complete" (default 1000ms) – <a href="https://neovim.io/doc/user/options.html#'timeoutlen'">vim-docs.</a></blockquote>
 
-<sub>The way this setting works can also be described from a musical point of view. Then one could say that this is the time interval in which a sequence of notes in an arpeggio must be played in order to be recognized as a chord.
-</sub>
-
-<sub> A value like `350` is suitable imo. It is usually sufficient to press the "initializing" keys of a sequence in this time frame. For this plugin this would be e.g., `yd` in normal mode. Then it will wait for the rest of the motion. Values that are too short can cause unintended behavior and interference with some keyboards. In my experience, some key sequences, e.g., on programmable keyboards with Tap-Hold layer keys may not get tracked with a timeoutlen < 200. Check `:h timeoutlen` to set it up to your preference with related settings.
-</sub>
+To give an opinion beyond the use of this plugin: A value like `350` could be suitable. Some configurations use very low values for this setting, as was the case for mine. But I also made the experience that on some keyboards not all key sequences can be executed if `timeoutlen` is lower than `200`.
 
 </details>
 
