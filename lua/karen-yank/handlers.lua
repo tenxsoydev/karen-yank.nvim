@@ -4,9 +4,6 @@ local M = {}
 ---@param get_reg string|number
 function M.sync_regs(set_reg, get_reg) vim.fn.setreg(set_reg, vim.fn.getreg(get_reg)) end
 
----@param fn fun()
-function M.lazy(fn) vim.defer_fn(vim.schedule_wrap(fn), 10) end
-
 ---@param num_reg_opts NumberRegOpts
 local function handle_num_regs(num_reg_opts)
 	-- do not not touch number register if a named register is targeted
@@ -103,7 +100,7 @@ function M.handle_paste(key, paste_opts)
 	if paste_opts.preserve_selection then key = key .. "`[v`]" end
 
 	-- set system clipboard to previous selection
-	M.lazy(function() M.sync_regs("+", "y") end)
+	vim.defer_fn(function() M.sync_regs("+", "y") end, 10)
 	return key
 end
 
