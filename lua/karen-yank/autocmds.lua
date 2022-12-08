@@ -20,7 +20,6 @@ function M.set_aus(num_reg_opts)
 				end
 			end
 
-			vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "n", false)
 			handlers.handle_duplicates(num_reg_opts.transitory_reg, num_reg_opts.deduplicate.ignore_whitespace)
 			vim.defer_fn(
 				function() vim.fn.setreg(num_reg_opts.transitory_reg.reg, num_reg_opts.transitory_reg.placeholder) end,

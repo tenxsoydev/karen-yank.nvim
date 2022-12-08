@@ -64,6 +64,7 @@ end
 ---@param num_reg_opts NumberRegOpts
 function M.handle_cut(key, num_reg_opts)
 	handle_num_regs(num_reg_opts)
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "n", false)
 	return '"0' .. key
 end
 
