@@ -64,8 +64,13 @@ end
 ---@param num_reg_opts NumberRegOpts
 function M.handle_cut(key, num_reg_opts)
 	handle_num_regs(num_reg_opts)
+
+	key = '"0' .. key
+
+	if vim.api.nvim_get_mode()["mode"] == "n" then return key end
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "n", false)
-	return '"0' .. key
+
+	return key
 end
 
 ---@param key string
