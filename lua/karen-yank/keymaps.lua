@@ -33,9 +33,7 @@ function M.set_maps(config)
 
 	-- set keys for deletes / cuts
 	for key, desc in pairs(reg_keys.delete) do
-		if unused_keys[key] then
-			goto continue
-		end
+		if unused_keys[key] then goto continue end
 
 		if not config.on_delete.black_hole_default then
 			map({ "n", "v" }, config.mappings.karen .. key, '"_' .. key, { desc = desc })
