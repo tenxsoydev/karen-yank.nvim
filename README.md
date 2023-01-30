@@ -68,12 +68,6 @@ require("karen-yank").setup {
       -- Causes e.g. `yD` pressed at the beginning of a line to be considered a duplicate of `ydd` pressed in the same line
       ignore_whitespace = true,
     },
-    transitory_reg = {
-      -- Transitory register that karen will use for some actions
-      reg = "y",
-      -- Placeholder with which the register will be filled after use
-      placeholder = "👩🏼",
-    },
   },
   mappings = {
     -- The key that controls the use of registers (and probably talks to the manager when things doesn't work as intended)

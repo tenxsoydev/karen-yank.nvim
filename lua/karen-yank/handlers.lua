@@ -1,18 +1,18 @@
 local M = {}
 
+local transitory_reg = ""
+
 ---@param set_reg string|number
 ---@param get_reg string|number
 function M.sync_regs(set_reg, get_reg) vim.fn.setreg(set_reg, vim.fn.getreg(get_reg)) end
 
 ---@param num_reg_opts NumberRegOpts
 local function handle_num_regs(num_reg_opts)
-	-- do not not touch number register if a named register is targeted
+	-- do not touch number registers if a named register is targeted
 	if vim.api.nvim_command_output("ec v:register"):match "%w" or not num_reg_opts.enable then return end
 
 	-- store last register in case yanking a duplicate removes it
-	if vim.fn.getreg(9) ~= vim.fn.getreg(num_reg_opts.transitory_reg.reg) then
-		M.sync_regs(num_reg_opts.transitory_reg.reg, 9)
-	end
+	if vim.fn.getreg(9) ~= transitory_reg then transitory_reg = vim.fn.getreg(9) end
 
 	-- move entries in number registers up
 	local x = 9
@@ -22,9 +22,8 @@ local function handle_num_regs(num_reg_opts)
 	end
 end
 
----@param transitory_reg TransitoryRegOpts
 ---@param ignore_whitespace boolean
-function M.handle_duplicates(transitory_reg, ignore_whitespace)
+function M.handle_duplicates(ignore_whitespace)
 	-- get current registers
 	local regs = {}
 	for i = 0, 9 do
@@ -49,7 +48,7 @@ function M.handle_duplicates(transitory_reg, ignore_whitespace)
 
 	-- restore last register if neccessary
 	if vim.fn.getreg(8) ~= "" and (vim.fn.getreg(9) == "" or vim.fn.getreg(9) == vim.fn.getreg(8)) then
-		M.sync_regs(9, transitory_reg.reg)
+		vim.fn.setreg(9, transitory_reg)
 	end
 end
 
