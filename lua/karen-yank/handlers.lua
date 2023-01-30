@@ -97,6 +97,40 @@ function M.handle_yank(key, yank_opts, num_reg_opts)
 	return key
 end
 
+---@param paste_opts PasteOpts
+function M.handle_bh_paste(paste_opts)
+	local init_cursor_pos = vim.api.nvim_win_get_cursor(0)[2]
+	local col_threshold = vim.fn.col "$" - 3
+
+	if init_cursor_pos >= col_threshold then
+		if paste_opts.preserve_selection then return '"_dp`[v`]' end
+		return '"_dp'
+	end
+
+	---@param keys string
+	---@param mode string
+	local function feedkeys(keys, mode)
+		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), mode, false)
+	end
+
+	feedkeys("o", "v")
+
+	---@diagnostic disable-next-line: param-type-mismatch
+	vim.defer_fn(function()
+		local new_cursor_pos = vim.api.nvim_win_get_cursor(0)[2]
+
+		if init_cursor_pos < new_cursor_pos and new_cursor_pos >= col_threshold then
+			feedkeys('"_dp', "v")
+		else
+			feedkeys('"_dP', "v")
+		end
+
+		if paste_opts.preserve_selection then feedkeys("`[v`]", "n") end
+	end, 1)
+
+	return "<Ignore>"
+end
+
 ---@param key string
 ---@param paste_opts PasteOpts
 function M.handle_paste(key, paste_opts)
