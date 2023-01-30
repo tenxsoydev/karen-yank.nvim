@@ -119,7 +119,7 @@ function M.handle_bh_paste(paste_opts)
 	vim.defer_fn(function()
 		local new_cursor_pos = vim.api.nvim_win_get_cursor(0)[2]
 
-		if init_cursor_pos < new_cursor_pos and new_cursor_pos >= col_threshold then
+		if new_cursor_pos >= col_threshold then
 			feedkeys('"_dp', "v")
 		else
 			feedkeys('"_dP', "v")
