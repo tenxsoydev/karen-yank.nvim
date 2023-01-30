@@ -58,13 +58,13 @@ function M.set_maps(config)
 		map(
 			"v",
 			key,
-			"getpos('.')[2] >= col('$') - 1 ? '\"_dp' : '\"_dP'",
+			function() return handlers.handle_paste(key, config.on_paste, true) end,
 			{ desc = desc .. " and Delete Selection", expr = true }
 		)
 		map(
 			"v",
 			config.mappings.karen .. key,
-			function() return handlers.handle_paste("p", config.on_paste) end,
+			function() return handlers.handle_paste(key, config.on_paste, false) end,
 			{ expr = true, desc = desc .. " and Yank Selection Into Register" }
 		)
 	end
