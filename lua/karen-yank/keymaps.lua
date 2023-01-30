@@ -24,6 +24,9 @@ local reg_keys = {
 	},
 }
 
+---@param keys string
+local function feedkeys(keys) vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "v", false) end
+
 ---@param config Config
 function M.set_maps(config)
 	local unused_keys = {}
@@ -55,12 +58,20 @@ function M.set_maps(config)
 	for key, desc in pairs(reg_keys.paste) do
 		if not config.on_paste.black_hole_default then return end
 
-		map(
-			"v",
-			key,
-			"getpos('.')[2] >= col('$') - 1 ? '\"_dp' : '\"_dP'",
-			{ desc = desc .. " and Delete Selection", expr = true }
-		)
+		map("v", key, function()
+			local init_cursor_pos = vim.api.nvim_win_get_cursor(0)[2]
+			if init_cursor_pos >= vim.fn.col "$" - 3 then return '"_dp' end
+			feedkeys "o"
+			vim.defer_fn(function()
+				local new_cursor_pos = vim.api.nvim_win_get_cursor(0)[2]
+				if init_cursor_pos < new_cursor_pos and new_cursor_pos >= vim.fn.col "$" - 3 then
+					feedkeys '"_dp'
+				else
+					feedkeys '"_dP'
+				end
+			end, 1)
+			return "<Ignore>"
+		end, { desc = desc .. " and Delete Selection", expr = true })
 		map(
 			"v",
 			config.mappings.karen .. key,
