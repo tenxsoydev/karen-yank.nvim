@@ -21,11 +21,6 @@ local M = {}
 ---@class NumberRegOpts
 ---@field enable boolean
 ---@field deduplicate { enable: boolean, ignore_whitespace: boolean }
----@field transitory_reg TransitoryRegOpts
-
----@class TransitoryRegOpts
----@field reg string '[a-z]'
----@field placeholder string|false
 
 ---@class MappingOpts
 ---@field karen string
@@ -51,10 +46,6 @@ local default_config = {
 		deduplicate = {
 			enable = true,
 			ignore_whitespace = true,
-		},
-		transitory_reg = {
-			reg = "y",
-			placeholder = "👩🏼",
 		},
 	},
 	mappings = {
