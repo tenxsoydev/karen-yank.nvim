@@ -97,50 +97,36 @@ function M.handle_yank(key, yank_opts, num_reg_opts)
 	return key
 end
 
----@param paste_opts PasteOpts
-function M.handle_bh_paste(paste_opts)
-	local init_cursor_pos = vim.api.nvim_win_get_cursor(0)[2]
-	local col_threshold = vim.fn.col "$" - 3
-
-	if init_cursor_pos >= col_threshold then
-		if paste_opts.preserve_selection then return '"_dp`[v`]' end
-		return '"_dp'
-	end
-
-	---@param keys string
-	---@param mode string
-	local function feedkeys(keys, mode)
-		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), mode, false)
-	end
-
-	feedkeys("o", "v")
-
-	---@diagnostic disable-next-line: param-type-mismatch
-	vim.defer_fn(function()
-		local new_cursor_pos = vim.api.nvim_win_get_cursor(0)[2]
-
-		if new_cursor_pos >= col_threshold then
-			feedkeys('"_dp', "v")
-		else
-			feedkeys('"_dP', "v")
-		end
-
-		if paste_opts.preserve_selection then feedkeys("`[v`]", "n") end
-	end, 1)
-
-	return "<Ignore>"
-end
-
 ---@param key string
 ---@param paste_opts PasteOpts
-function M.handle_paste(key, paste_opts)
-	-- yank selection to the transitory register to restore it to the system clipbaord after pasting
-	key = '"yygv' .. key
+---@param black_hole boolean
+function M.handle_paste(key, paste_opts, black_hole)
+	if paste_opts.preserve_selection then key = key .. "`[v`]" end
+
+	if not black_hole then
+		vim.defer_fn(function() M.sync_regs("+", "-") end, 10)
+		vim.defer_fn(function() M.sync_regs('"', "-") end, 10)
+		return key
+	end
+
+	-- keep previous registers contents when pasting in visual mode
+	local affected_regs = { "*", "+", '"', "-" }
+	local stored_regs = {}
+
+	-- backup potentially affected regs
+	for _, reg in ipairs(affected_regs) do
+		stored_regs[reg] = vim.fn.getreg(reg)
+	end
 
 	if paste_opts.preserve_selection then key = key .. "`[v`]" end
 
-	-- set system clipboard to previous selection
-	vim.defer_fn(function() M.sync_regs("+", "y") end, 10)
+	vim.defer_fn(function()
+		-- restore potentially affected regs
+		for _, reg in ipairs(affected_regs) do
+			vim.fn.setreg(reg, stored_regs[reg])
+		end
+	end, 10)
+
 	return key
 end
 
