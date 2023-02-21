@@ -54,8 +54,8 @@ local default_config = {
 	},
 }
 
----@param user_config Config
+---@param user_config? Config
 ---@return Config
-function M.merge(user_config) return vim.tbl_deep_extend("keep", user_config, default_config) end
+function M.merge(user_config) return vim.tbl_deep_extend("keep", user_config or {}, default_config) end
 
 return M

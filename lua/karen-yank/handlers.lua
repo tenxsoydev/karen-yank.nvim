@@ -9,7 +9,7 @@ function M.sync_regs(set_reg, get_reg) vim.fn.setreg(set_reg, vim.fn.getreg(get_
 ---@param num_reg_opts NumberRegOpts
 local function handle_num_regs(num_reg_opts)
 	-- do not touch number registers if a named register is targeted
-	if vim.api.nvim_command_output("ec v:register"):match "%w" or not num_reg_opts.enable then return end
+	if vim.v.register:match "%w" or not num_reg_opts.enable then return end
 
 	-- store last register in case yanking a duplicate removes it
 	if vim.fn.getreg(9) ~= transitory_reg then transitory_reg = vim.fn.getreg(9) end
