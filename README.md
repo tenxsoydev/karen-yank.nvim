@@ -65,7 +65,7 @@ require("karen-yank").setup {
     invert = false,
     -- disable all if `true` or a table of keymaps [possible values: {"s"|"S"|"d"|"D"|"c"|"C"|"x"|"X"|"p"|"P"|"y"|"Y"}]
     -- "s"/"S" is not mapped by default, due to it's common utilization for plugins like surround or hop
-    disabled = { "s", "S" },
+    disable = { "s", "S" },
   },
   number_regs = {
     -- use number registers for yanks and cuts
