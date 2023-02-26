@@ -3,7 +3,7 @@ local M = {}
 local config = require("karen-yank.config").get()
 local handlers = require("karen-yank.handlers")
 
-function M.set_aus()
+function M.set()
 	if not config.number_regs.enable then return end
 
 	vim.api.nvim_create_augroup("KarenYank", {})

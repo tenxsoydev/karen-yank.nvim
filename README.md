@@ -1,16 +1,23 @@
+<!-- panvimdoc-ignore-start -->
+
 # karen-yank 👩🏼‍🏫
 
 Karen Yank<br>
-<sup>– cuts, deletes and copies your way</sup>
+<sup>– deletes, cuts and yanks your way</sup>
 
-## Main idea
+<!-- panvimdoc-ignore-end -->
 
-- Enhance Neovims behavior related to `delete` and `yank` mappings.
-- Make the use of registers more intentional while remaining intuitive for both experienced and new VIM users.
+## Objective
+
+- Make use of registers more intentional while remaining intuitive for experienced and novice VIM users.
 
 ## Usage
 
-With [karen-yank.nvim][00] delete keys like <kbd>d</kbd>, <kbd>D</kbd>, <kbd>c</kbd> etc. will genuinely **delete** by default (into the black hole register `"_`), and **cut** in a `<karen><delete key>` key-chord (e.g., <kbd>yd</kbd>). This results in <kbd>p</kbd> using only the last cut text, the contents of your system clipboard, or a register specified before pasting.
+After installation there is nothing to do besides enjoying cleaner registers.
+
+Delete keys like <kbd>d</kbd>, <kbd>D</kbd>, <kbd>c</kbd> etc. will genuinely **delete** by default, and **cut** in a `<karen><delete key>` key-chord. The results is that deletions after yanks and cuts won't mess with <kbd>p</kbd> so it will only use the last cut text, the contents of your system clipboard, or a register specified before pasting.
+
+By default, `karen` is mapped to <kbd>y</kbd> (so e.g. <kbd>yd</kbd> would delete into a register).
 
 Your yanks and cuts are also extended to use VIMs number registers while keeping them free of duplicates.
 
@@ -37,111 +44,94 @@ Then load it like most of your other plugins
 require("karen-yank").setup()
 ```
 
+When using [lazy.nvim][15] you can just add this line to your `lazy.setup()`
+
+```lua
+{ "tenxsoydev/karen-yank.nvim", config = true },
+```
+
 ## Config
 
 Defaults:
 
 ```lua
 require("karen-yank").setup {
-  on_delete = {
-    -- True: delete into `"_` by default and use registers with karen key
-    -- False: use registers by default and delete into `"_` with karen key
-    black_hole_default = true,
-  },
-  on_yank = {
-    -- Preserve cursor position on yank
-    preserve_cursor = true,
-    preserve_selection = false,
-  },
-  on_paste = {
-    -- True: paste-over-selection will delete replaced text without moving it into a register
-    -- False: paste-over-selection will move the replaced text into a register
-    black_hole_default = true,
-    preserve_selection = false,
+  mappings = {
+    -- karen controls the use of registers (and probably talks to the manager when things doesn't work as intended)
+    -- map something like `<leader><leader>` if you use the plugin inverted
+    karen = "y",
+    -- true: delete into black hole by default and use registers with karen key
+    -- false: use registers by default and delete into black hole with karen key
+    invert = false,
+    -- disable all if `true` or a table of keymaps [possible values: {"s"|"S"|"d"|"D"|"c"|"C"|"x"|"X"|"p"|"P"|"y"|"Y"}]
+    -- "s"/"S" is not mapped by default, due to it's common utilization for plugins like surround or hop
+    disabled = { "s", "S" },
   },
   number_regs = {
-    -- Use number registers for yanks and cuts
+    -- use number registers for yanks and cuts
     enable = true,
     deduplicate = {
-      -- Prevent populating multiple number registers with the same entries
+      -- prevent populating multiple number registers with the same entries
       enable = true,
-      -- Causes e.g. `yD` pressed at the beginning of a line to be considered a duplicate of `ydd` pressed in the same line
+      -- will see `yD` pressed at the beginning of a line as a duplicate of `ydd` pressed in the same line
       ignore_whitespace = true,
     },
   },
-  mappings = {
-    -- The key that controls the use of registers (and probably talks to the manager when things doesn't work as intended)
-    -- You can map e.g., `<leader><leader>` if you use the plugin inverted
-    karen = "y",
-    -- Unused keys possible values: { "d", "D", "c", "C", "x", "X", "s", "S" },
-    -- "S" / "s" are often utilized for plugins like surround or hop. Therefore, they are not used by default
-    unused = { "s", "S" },
-  },
 }
 ```
+
+### Custom mappings
+
+Karen exposes four actions that can be used in expression mappings
+
+<details>
+<summary><code>local actions = require("karen-yank.actions")</code> <sub><sup>click to expand...</sup></sub></summary>
+
+```lua
+local actions = require("karen-yank.actions")
+
+---@param vim_parent "d"|"D"|"c"|"C"|"x"|"X"|"s"|"S"
+actions.cut(vim_parent)
+
+---@param vim_parent "d"|"D"|"c"|"C"|"x"|"X"|"s"|"S"
+actions.delete(vim_parent)
+
+---@param kind "motion"|"line"|"trail"
+---@param opts? { preserve_cursor: boolean, preserve_selection: boolean }
+-- default opts = { preserve_cursor = true, preserve_selection = false }
+actions.yank(kind, opts)
+
+---@param direction "before"|"after"
+---@param opts? { black_hole: boolean, preserve_selection: boolean }
+-- default opts = { black_hole = true, preserve_selection = false }
+actions.paste(direction, opts)
+
+-- Example mappings (equivalent to defaults)
+local map = vim.keymap.set
+map("", "d", function() return actions.delete("d") end, { expr = true })
+map("", "yd", function() return actions.cut("d") end, { expr = true })
+map("", "D", function() return actions.delete("D") end, { expr = true })
+map("", "yD", function() return actions.cut("D") end, { expr = true })
+map("", "c", function() return actions.delete("c") end, { expr = true })
+map("", "yc", function() return actions.cut("c") end, { expr = true })
+-- ...
+map("", "y", function() return actions.yank("motion") end, { expr = true })
+map("", "yy", function() return actions.yank("line") end, { expr = true })
+map("", "Y", function() return actions.yank("trail") end, { expr = true })
+--
+map("v", "p", function() return actions.paste(direction, { black_hole = true }) end, { expr = true })
+map("v", "yp", function() return actions.paste(direction, { black_hole = false }) end, { expr = true })
+```
+
+</details>
 
 ## Additional Info
 
 Karen is mainly designed to be used with nvim in conjunction with the system `clipboard=unnamedplus`. For other modes, not all functions of the plugin may work. If you notice unexpected behavior with the mode you are using, feel free to open an issue.
 
-<details>
-<summary>Plugin-related functionalities</summary>
+If the plugin offered some value to you, filling the ☆ of this repo with color, warms the heart of your fellow developer.
 
-Since there is no real API yet, the configuration strives to provide all the options on which a user could potentially fall short if he tries to customize the plugin's behavior.
-
-The creation of an extended set of predefined keymaps and commands has been omitted, as these can be created the user's own nvim configuration with maximum customizability. To give three simple examples:
-
-1. As `ddp` and `ddP` is sometimes used to move lines down / up.
-   One could use `<A-j>` and `<A-k>` to move lines and ranges.
-
-   ```lua
-   local map = vim.keymap.set
-   -- ...
-   -- Move Lines (using `:` vs `<Cmd>` makes a difference)
-   map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move Line Down" })
-   map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move Line Up" })
-   map("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move Line Down" })
-   map("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move Line Up" })
-   map("v", "<A-j>", ":m '>+1<CR>gv-gv", { desc = "Move Lines Down" })
-   map("v", "<A-k>", ":m '<-2<CR>gv-gv", { desc = "Move Lines Up" })
-   -- Duplicate Lines
-   map("n", "<A-S-j>", '"dyy"dp', { desc = "Duplicate Line Down" })
-   map("n", "<A-S-k>", '"dyy"dP', { desc = "Duplicate Line Up" })
-   map("v", "<A-S-j>", "\"dy']\"dp`]'[V']", { desc = "Duplicate Lines Down" })
-   map("v", "<A-S-k>", "\"dy\"dP'[V']", { desc = "Duplicate Lines Up" })
-   ```
-
-2. Highlight on yank
-
-   ```lua
-   vim.api.nvim_create_autocmd(
-   	"TextYankPost",
-   	{ callback = function() vim.highlight.on_yank { higroup = "IncSearch", timeout = 150 } end }
-   )
-   ```
-
-3. A command to clear registers could look like
-
-   ```lua
-   vim.api.nvim_create_user_command("WipeRegisters", function()
-   	vim.cmd "for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor"
-   	vim.cmd "wshada!"
-   end, { desc = "Clear All Registers" })
-   ```
-
-</details>
-
-<details>
-
-<summary><sup>*</sup><code>timeoutlen</code></summary>
-
-<blockquote>"Time in milliseconds to wait for a mapped sequence to complete" (default 1000ms) – <a href="https://neovim.io/doc/user/options.html#'timeoutlen'">vim-docs.</a></blockquote>
-
-To give an opinion beyond the use of this plugin: A value like `350` could be suitable. Some configurations use very low values for this setting, as was the case for mine. But I also made the experience that on some keyboards not all key sequences can be executed if `timeoutlen` is lower than `200`.
-
-</details>
-
-## Justification
+## Why?
 
 There are a dozen of plugins that deal with VIMs yanks and registers so why another one?
 
@@ -149,11 +139,12 @@ There are a dozen of plugins that deal with VIMs yanks and registers so why anot
   - [`registers.nvim`][20] for a general enhancement of interaction with registers
   - [`Telescope`][30]'s `registers` subcommand for fuzzy searching register contents
   - Any clipboard manager for your OS
-- It was already finished: Most of the UX this plugin provides was a part of my vim config since its pre-lua days.
-  Wrapping it up in a plugin and making it public for other strangers like me was just a matter of making some of its functionalities configurable - _hoping not to have messed anything up along the way_.
+- It was already finished: The UX this plugin provides was a part of my vim config since its pre-lua days.
+  Wrapping it up in a plugin and making it public to other strangers like me was just a matter of making some of its functionalities configurable - _hoping not to have messed anything up along the way_.
 
 [00]: https://github.com/tenxsoydev/karen-yank.nvim#karen-yank-
 [05]: https://github.com/tenxsoydev/karen-yank.nvim#additional-info
 [10]: https://github.com/wbthomason/packer.nvim
+[15]: https://github.com/folke/lazy.nvim
 [20]: https://github.com/tversteeg/registers.nvim
 [30]: https://github.com/nvim-telescope/telescope.nvim
