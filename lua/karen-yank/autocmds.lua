@@ -6,7 +6,9 @@ local handlers = require "karen-yank.handlers"
 function M.set_aus(num_reg_opts)
 	if not num_reg_opts.enable then return end
 
+	vim.api.nvim_create_augroup("KarenYank", {})
 	vim.api.nvim_create_autocmd("TextYankPost", {
+		group = "KarenYank",
 		callback = function()
 			-- use only relevant registers
 			if not (vim.v.register:match "%d+" or vim.v.register == "+" or vim.v.register == '"') then return end
