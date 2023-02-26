@@ -1,15 +1,15 @@
 local M = {}
 
 local transitory_reg = ""
+local config = require("karen-yank.config").get()
 
 ---@param set_reg string|number
 ---@param get_reg string|number
 function M.sync_regs(set_reg, get_reg) vim.fn.setreg(set_reg, vim.fn.getreg(get_reg)) end
 
----@param num_reg_opts NumberRegOpts
-local function handle_num_regs(num_reg_opts)
+local function handle_num_regs()
 	-- do not touch number registers if a named register is targeted
-	if vim.v.register:match "%w" or not num_reg_opts.enable then return end
+	if vim.v.register:match "%w" or not config.number_regs.enable then return end
 
 	-- store last register in case yanking a duplicate removes it
 	if vim.fn.getreg(9) ~= transitory_reg then transitory_reg = vim.fn.getreg(9) end
@@ -22,8 +22,7 @@ local function handle_num_regs(num_reg_opts)
 	end
 end
 
----@param ignore_whitespace boolean
-function M.handle_duplicates(ignore_whitespace)
+function M.handle_duplicates()
 	-- get current registers
 	local regs = {}
 	for i = 0, 9 do
@@ -33,7 +32,7 @@ function M.handle_duplicates(ignore_whitespace)
 	-- remove duplicates
 	local seen = {}
 	for i, reg in ipairs(regs) do
-		if ignore_whitespace then reg = reg:gsub("%s+", "") end
+		if config.number_regs.deduplicate.ignore_whitespace then reg = reg:gsub("%s+", "") end
 		if seen[reg] then
 			table.remove(regs, i)
 		else
@@ -60,9 +59,8 @@ function M.handle_delete(key)
 end
 
 ---@param key string
----@param num_reg_opts NumberRegOpts
-function M.handle_cut(key, num_reg_opts)
-	handle_num_regs(num_reg_opts)
+function M.handle_cut(key)
+	handle_num_regs()
 
 	key = '"0' .. key
 
@@ -73,22 +71,20 @@ function M.handle_cut(key, num_reg_opts)
 end
 
 ---@param key string
----@param yank_opts YankOpts
----@param num_reg_opts NumberRegOpts
-function M.handle_yank(key, yank_opts, num_reg_opts)
-	handle_num_regs(num_reg_opts)
+function M.handle_yank(key)
+	handle_num_regs()
 	-- make capital Y behave
 	if key == "Y" then key = "y$" end
 
 	local mode = vim.api.nvim_get_mode()["mode"]
 	if mode == "n" then return key end
 
-	if yank_opts.preserve_selection then
+	if config.on_yank.preserve_selection then
 		key = key .. "gv"
 		return key
 	end
 
-	if yank_opts.preserve_cursor then
+	if config.on_yank.preserve_cursor then
 		if mode == "v" then key = key .. "gvv" end
 		if mode == "V" then key = key .. "gvvv" end
 	end
@@ -97,10 +93,9 @@ function M.handle_yank(key, yank_opts, num_reg_opts)
 end
 
 ---@param key string
----@param paste_opts PasteOpts
 ---@param black_hole boolean
-function M.handle_paste(key, paste_opts, black_hole)
-	if paste_opts.preserve_selection then key = key .. "`[v`]" end
+function M.handle_paste(key, black_hole)
+	if config.on_paste.preserve_selection then key = key .. "`[v`]" end
 
 	if not black_hole then
 		vim.defer_fn(function() M.sync_regs("+", "-") end, 10)
@@ -117,6 +112,7 @@ function M.handle_paste(key, paste_opts, black_hole)
 		stored_regs[reg] = vim.fn.getreg(reg)
 	end
 
+	-- NOTE: 1.x change
 
 	vim.defer_fn(function()
 		-- restore potentially affected regs

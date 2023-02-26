@@ -1,8 +1,9 @@
 local M = {}
 
+local config = require("karen-yank.config").get()
 local handlers = require "karen-yank.handlers"
 local map = vim.keymap.set
-local reg_keys = {
+local keys = {
 	delete = {
 		d = "Delete Text",
 		D = "Delete Rest of Line",
@@ -24,16 +25,15 @@ local reg_keys = {
 	},
 }
 
----@param config Config
-function M.set_maps(config)
-	local unused_keys = {}
+function M.set_maps()
+
+	local disabled_keys = {}
 	for _, key in ipairs(config.mappings.unused) do
-		unused_keys[key] = true
+		disabled_keys[key] = true
 	end
 
-	-- set keys for deletes / cuts
-	for key, desc in pairs(reg_keys.delete) do
-		if unused_keys[key] then goto continue end
+	for key, desc in pairs(keys.delete) do
+		if disabled_keys[key] then goto continue end
 
 		if not config.on_delete.black_hole_default then
 			map({ "n", "v" }, config.mappings.karen .. key, '"_' .. key, { desc = desc })
@@ -44,39 +44,32 @@ function M.set_maps(config)
 		map(
 			{ "n", "v" },
 			config.mappings.karen .. key,
-			function() return handlers.handle_cut(key, config.number_regs) end,
+			function() return handlers.handle_cut(key) end,
 			{ expr = true, desc = desc .. " Into Register" }
 		)
 
 		::continue::
 	end
 
-	-- set maps for pastes over selection
-	for key, desc in pairs(reg_keys.paste) do
+	for key, desc in pairs(keys.paste) do
 		if not config.on_paste.black_hole_default then return end
 
 		map(
 			"v",
 			key,
-			function() return handlers.handle_paste(key, config.on_paste, true) end,
+			function() return handlers.handle_paste(key, true) end,
 			{ desc = desc .. " and Delete Selection", expr = true }
 		)
 		map(
 			"v",
 			config.mappings.karen .. key,
-			function() return handlers.handle_paste(key, config.on_paste, false) end,
+			function() return handlers.handle_paste(key, false) end,
 			{ expr = true, desc = desc .. " and Yank Selection Into Register" }
 		)
 	end
 
-	-- set keys for yanks
-	for key, desc in pairs(reg_keys.yank) do
-		map(
-			"",
-			key,
-			function() return handlers.handle_yank(key, config.on_yank, config.number_regs) end,
-			{ expr = true, desc = desc }
-		)
+	for key, desc in pairs(keys.yank) do
+		map("", key, function() return handlers.handle_yank(key) end, { expr = true, desc = desc })
 	end
 end
 
