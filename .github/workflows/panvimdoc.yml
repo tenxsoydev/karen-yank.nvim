@@ -1,0 +1,29 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "README.md"
+  pull_request:
+    paths:
+      - "README.md"
+  workflow_dispatch:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate docs
+        uses: kdheepak/panvimdoc@main
+        with:
+          vimdoc: karen-yank
+          description: deletes, cuts and yanks your way
+          version: "Neovim >= 0.8.0"
+          demojify: true
+      - name: Commit docs
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "docs: auto generate vim docs"
+          branch: ${{ github.head_ref }}
