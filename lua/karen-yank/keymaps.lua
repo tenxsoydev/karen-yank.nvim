@@ -14,8 +14,8 @@ local reg_keys = {
 		S = "Substitute Rest of Line",
 	},
 	paste = {
-		p = "Paste",
-		P = "Paste",
+		p = "Paste After",
+		P = "Paste Before",
 	},
 	yank = {
 		y = "Yank Text",

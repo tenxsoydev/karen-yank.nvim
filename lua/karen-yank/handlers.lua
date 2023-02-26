@@ -117,7 +117,6 @@ function M.handle_paste(key, paste_opts, black_hole)
 		stored_regs[reg] = vim.fn.getreg(reg)
 	end
 
-	if paste_opts.preserve_selection then key = key .. "`[v`]" end
 
 	vim.defer_fn(function()
 		-- restore potentially affected regs
