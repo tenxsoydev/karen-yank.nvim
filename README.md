@@ -17,18 +17,18 @@ After installation there is nothing to do besides enjoying cleaner registers.
 
 Delete keys like <kbd>d</kbd>, <kbd>D</kbd>, <kbd>c</kbd> etc. will genuinely **delete** by default, and **cut** in a `<karen><delete key>` key-chord. The results is that deletions after yanks and cuts won't mess with <kbd>p</kbd> so it will only use the last cut text, the contents of your system clipboard, or a register specified before pasting.
 
-By default, `karen` is mapped to <kbd>y</kbd> (so e.g. <kbd>yd</kbd> would delete into a register).
-
 Your yanks and cuts are also extended to use VIMs number registers while keeping them free of duplicates.
 
 ### Keymaps
 
-The mappings stay true to VIMs defaults:
+By default, `karen` is mapped to <kbd>y</kbd>.
+
+All predefined mappings stay true to VIMs defaults:
 
 - a _motion_ like <kbd>ciw</kbd> will delete a word and start insert, while <kbd>yciw</kbd> will cut a word and start insert. <kbd>dd</kbd> deletes a line, <kbd>ydd</kbd> cuts a line etc.
 - in _visual_ mode <kbd>yd</kbd> pressed in <sup>\*</sup>`timeoutlen` will cut. While just <kbd>y</kbd> will yank as usual after `timeoutlen` (or immediately when followed by something like a movement with <kbd>j</kbd>. So no impairments with fast typing)
 
-<sub>To invert the functionality i.e., using `<karen>d` to delete into the black hole register, check the config section.</sub>
+To invert the functionality i.e., using `<karen>d` to delete into the black hole register, check the config section.
 
 ## Installation
 
