@@ -3,27 +3,20 @@
 ==============================================================================
 Table of Contents                               *karen-yank-table-of-contents*
 
-1. karen-yank ‍                                  |karen-yank-karen-yank-‍|
-  - Main idea                            |karen-yank-karen-yank-‍-main-idea|
-  - Usage                                    |karen-yank-karen-yank-‍-usage|
-  - Installation                      |karen-yank-karen-yank-‍-installation|
-  - Config                                  |karen-yank-karen-yank-‍-config|
-  - Additional Info                |karen-yank-karen-yank-‍-additional-info|
-  - Why?                                      |karen-yank-karen-yank-‍-why?|
+  - Objective                                           |karen-yank-objective|
+  - Usage                                                   |karen-yank-usage|
+  - Installation                                     |karen-yank-installation|
+  - Config                                                 |karen-yank-config|
+  - Additional Info                               |karen-yank-additional-info|
+  - Why?                                                     |karen-yank-why?|
 
-==============================================================================
-1. karen-yank ‍                                  *karen-yank-karen-yank-‍*
-
-Karen Yank – deletes, cuts and yanks your way
-
-
-MAIN IDEA                                *karen-yank-karen-yank-‍-main-idea*
+OBJECTIVE                                               *karen-yank-objective*
 
 
 - Make use of registers more intentional while remaining intuitive for experienced and novice VIM users.
 
 
-USAGE                                        *karen-yank-karen-yank-‍-usage*
+USAGE                                                       *karen-yank-usage*
 
 After installation there is nothing to do besides enjoying cleaner registers.
 
@@ -50,7 +43,7 @@ To invert the functionality i.e., using `<karen>d` to delete into the black
 hole register, check the config section.
 
 
-INSTALLATION                          *karen-yank-karen-yank-‍-installation*
+INSTALLATION                                         *karen-yank-installation*
 
 E.g., using a plugin manager like packer.nvim
 <https://github.com/wbthomason/packer.nvim>
@@ -73,7 +66,7 @@ line to your `lazy.setup()`
 <
 
 
-CONFIG                                      *karen-yank-karen-yank-‍-config*
+CONFIG                                                     *karen-yank-config*
 
 Defaults:
 
@@ -147,7 +140,7 @@ local actions = require("karen-yank.actions") click to expand… ~
 <
 
 
-ADDITIONAL INFO                    *karen-yank-karen-yank-‍-additional-info*
+ADDITIONAL INFO                                   *karen-yank-additional-info*
 
 Karen is mainly designed to be used with nvim in conjunction with the system
 `clipboard=unnamedplus`. For other modes, not all functions of the plugin may
@@ -158,7 +151,7 @@ If the plugin offered some value to you, filling the of this repo with color,
 warms the heart of your fellow developer.
 
 
-WHY?                                          *karen-yank-karen-yank-‍-why?*
+WHY?                                                         *karen-yank-why?*
 
 There are a dozen of plugins that deal with VIMs yanks and registers so why
 another one?
