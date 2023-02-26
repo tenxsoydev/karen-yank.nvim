@@ -1,9 +1,13 @@
+<!-- panvimdoc-ignore-start -->
+
 # karen-yank 👩🏼‍🏫
 
 Karen Yank<br>
 <sup>– deletes, cuts and yanks your way</sup>
 
-## Main idea
+<!-- panvimdoc-ignore-end -->
+
+## Objective
 
 - Make use of registers more intentional while remaining intuitive for experienced and novice VIM users.
 
