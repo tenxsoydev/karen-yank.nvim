@@ -1,7 +1,7 @@
 local M = {}
 
 local config = require("karen-yank.config").get()
-local handlers = require("karen-yank.handlers")
+local actions = require("karen-yank.actions")
 local map = vim.keymap.set
 local keys = {
 	delete = {
@@ -25,25 +25,28 @@ local keys = {
 	},
 }
 
-function M.set_maps()
+function M.set()
+	if type(config.mappings.disable) == "boolean" and config.mappings.disable then return end
+
 	local disabled_keys = {}
-	for _, key in ipairs(config.mappings.unused) do
+	---@diagnostic disable-next-line: param-type-mismatch
+	for _, key in ipairs(config.mappings.disable) do
 		disabled_keys[key] = true
 	end
 
 	for key, desc in pairs(keys.delete) do
 		if disabled_keys[key] then goto continue end
 
-		if not config.on_delete.black_hole_default then
-			map({ "n", "v" }, config.mappings.karen .. key, '"_' .. key, { desc = desc })
+		if config.mappings.invert then
+			map({ "n", "v" }, config.mappings.karen .. key, actions.delete(key), { desc = desc })
 			goto continue
 		end
 
-		map({ "n", "v" }, key, function() return handlers.handle_delete(key) end, { expr = true, desc = desc })
+		map({ "n", "v" }, key, function() return actions.delete(key) end, { expr = true, desc = desc })
 		map(
 			{ "n", "v" },
 			config.mappings.karen .. key,
-			function() return handlers.handle_cut(key) end,
+			function() return actions.cut(key) end,
 			{ expr = true, desc = desc .. " Into Register" }
 		)
 
@@ -51,24 +54,42 @@ function M.set_maps()
 	end
 
 	for key, desc in pairs(keys.paste) do
-		if not config.on_paste.black_hole_default then return end
+		if disabled_keys[key] then goto continue end
+
+		---@type "before"|"after"
+		local direction = "after"
+		if key == "P" then direction = "before" end
 
 		map(
 			"v",
 			key,
-			function() return handlers.handle_paste(key, true) end,
+			function() return actions.paste(direction, { black_hole = true }) end,
 			{ desc = desc .. " and Delete Selection", expr = true }
 		)
 		map(
 			"v",
 			config.mappings.karen .. key,
-			function() return handlers.handle_paste(key, false) end,
+			function() return actions.paste(direction, { black_hole = false }) end,
 			{ expr = true, desc = desc .. " and Yank Selection Into Register" }
 		)
+
+		::continue::
 	end
 
 	for key, desc in pairs(keys.yank) do
-		map("", key, function() return handlers.handle_yank(key) end, { expr = true, desc = desc })
+		if disabled_keys[key] then goto continue end
+
+		---@type "motion"|"line"|"trail"
+		local kind = "motion"
+		if key == "yy" then
+			kind = "line"
+		elseif key == "Y" then
+			kind = "trail"
+		end
+
+		map("", key, function() return actions.yank(kind) end, { expr = true, desc = desc })
+
+		::continue::
 	end
 end
 
