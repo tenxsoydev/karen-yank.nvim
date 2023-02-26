@@ -7,9 +7,9 @@ local M = {}
 
 ---@param user_config? Config
 function M.setup(user_config)
-	local config = require("karen-yank.config").merge(user_config)
-	require("karen-yank.keymaps").set_maps(config)
-	require("karen-yank.autocmds").set_aus(config.number_regs)
+	require("karen-yank.config").merge(user_config)
+	require("karen-yank.keymaps").set_maps()
+	require("karen-yank.autocmds").set_aus()
 end
 
 return M

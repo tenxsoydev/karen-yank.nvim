@@ -1,10 +1,10 @@
 local M = {}
 
+local config = require("karen-yank.config").get()
 local handlers = require "karen-yank.handlers"
 
----@param num_reg_opts NumberRegOpts
-function M.set_aus(num_reg_opts)
-	if not num_reg_opts.enable then return end
+function M.set_aus()
+	if not config.number_regs.enable then return end
 
 	vim.api.nvim_create_augroup("KarenYank", {})
 	vim.api.nvim_create_autocmd("TextYankPost", {
@@ -28,8 +28,8 @@ function M.set_aus(num_reg_opts)
 				end
 			end, 50)
 
-			if not num_reg_opts.deduplicate.enable then return end
-			handlers.handle_duplicates(num_reg_opts.deduplicate.ignore_whitespace)
+			if not config.number_regs.deduplicate.enable then return end
+			handlers.handle_duplicates()
 		end,
 	})
 end

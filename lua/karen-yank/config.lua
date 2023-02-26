@@ -29,7 +29,7 @@ local M = {}
 ---@alias DeleteKey "d"|"D"|"c"|"C"|"x"|"X"|"s"|"S"
 
 ---@type Config
-local default_config = {
+local defaults = {
 	on_delete = {
 		black_hole_default = true,
 	},
@@ -54,8 +54,17 @@ local default_config = {
 	},
 }
 
+---@type Config
+local used = defaults
+
 ---@param user_config? Config
+function M.merge(user_config) used = vim.tbl_deep_extend("keep", user_config or {}, defaults) end
+
+---@param kind? "defaults" @add to return default instead of currently used config
 ---@return Config
-function M.merge(user_config) return vim.tbl_deep_extend("keep", user_config or {}, default_config) end
+function M.get(kind)
+	if kind == "defaults" then return defaults end
+	return used
+end
 
 return M
