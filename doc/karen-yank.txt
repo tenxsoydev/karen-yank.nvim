@@ -25,15 +25,15 @@ in a `<karen><delete key>` key-chord. The results is that deletions after yanks
 and cuts won’t mess with p so it will only use the last cut text, the
 contents of your system clipboard, or a register specified before pasting.
 
-By default, `karen` is mapped to y (so e.g. yd would delete into a register).
-
 Your yanks and cuts are also extended to use VIMs number registers while
 keeping them free of duplicates.
 
 
 KEYMAPS ~
 
-The mappings stay true to VIMs defaults:
+By default, `karen` is mapped to y.
+
+All predefined mappings stay true to VIMs defaults:
 
 
 - a _motion_ like ciw will delete a word and start insert, while yciw will cut a word and start insert. dd deletes a line, ydd cuts a line etc.
