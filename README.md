@@ -129,7 +129,7 @@ map("v", "yp", function() return actions.paste(direction, { black_hole = false }
 
 Karen is mainly designed to be used with nvim in conjunction with the system `clipboard=unnamedplus`. For other modes, not all functions of the plugin may work. If you notice unexpected behavior with the mode you are using, feel free to open an issue.
 
-If the plugin offered some value to you, filling the ☆ of this repo with color, warms the heart of your fellow developer.
+If the plugin offered some value to you, filling the ☆ of this repo with color warms the heart of your fellow developer.
 
 ## Why?
 
