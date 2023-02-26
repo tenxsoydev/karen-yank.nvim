@@ -9,7 +9,7 @@ function M.sync_regs(set_reg, get_reg) vim.fn.setreg(set_reg, vim.fn.getreg(get_
 
 local function handle_num_regs()
 	-- do not touch number registers if a named register is targeted
-	if vim.v.register:match "%w" or not config.number_regs.enable then return end
+	if vim.v.register:match("%w") or not config.number_regs.enable then return end
 
 	-- store last register in case yanking a duplicate removes it
 	if vim.fn.getreg(9) ~= transitory_reg then transitory_reg = vim.fn.getreg(9) end
@@ -54,7 +54,7 @@ end
 ---@param key string
 function M.handle_delete(key)
 	-- do not use black_hole if a named register is targeted. E.g., '"add'
-	if vim.v.register:match "%w" then return key end
+	if vim.v.register:match("%w") then return key end
 	return '"_' .. key
 end
 
@@ -111,8 +111,6 @@ function M.handle_paste(key, black_hole)
 	for _, reg in ipairs(affected_regs) do
 		stored_regs[reg] = vim.fn.getreg(reg)
 	end
-
-	-- NOTE: 1.x change
 
 	vim.defer_fn(function()
 		-- restore potentially affected regs

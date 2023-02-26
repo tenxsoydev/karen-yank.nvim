@@ -1,7 +1,7 @@
 local M = {}
 
 local config = require("karen-yank.config").get()
-local handlers = require "karen-yank.handlers"
+local handlers = require("karen-yank.handlers")
 local map = vim.keymap.set
 local keys = {
 	delete = {
@@ -26,7 +26,6 @@ local keys = {
 }
 
 function M.set_maps()
-
 	local disabled_keys = {}
 	for _, key in ipairs(config.mappings.unused) do
 		disabled_keys[key] = true
