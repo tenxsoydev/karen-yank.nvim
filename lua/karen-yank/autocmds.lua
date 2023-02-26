@@ -4,7 +4,7 @@ local handlers = require "karen-yank.handlers"
 
 ---@param num_reg_opts NumberRegOpts
 function M.set_aus(num_reg_opts)
-	if not num_reg_opts.deduplicate.enable then return end
+	if not num_reg_opts.enable then return end
 
 	vim.api.nvim_create_autocmd("TextYankPost", {
 		callback = function()
@@ -26,6 +26,7 @@ function M.set_aus(num_reg_opts)
 				end
 			end, 50)
 
+			if not num_reg_opts.deduplicate.enable then return end
 			handlers.handle_duplicates(num_reg_opts.deduplicate.ignore_whitespace)
 		end,
 	})
