@@ -14,13 +14,7 @@ end
 ---@param key DeleteKey @vim key parent
 function M.cut(key)
 	handlers.handle_num_regs()
-
-	key = '"0' .. key
-
-	if vim.api.nvim_get_mode()["mode"] == "n" then return key end
-	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "n", false)
-
-	return key
+	return '"0' .. key
 end
 
 ---@param kind "motion"|"line"|"trail"
