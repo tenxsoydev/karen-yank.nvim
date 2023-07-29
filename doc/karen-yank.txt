@@ -12,7 +12,6 @@ Table of Contents                               *karen-yank-table-of-contents*
 
 OBJECTIVE                                               *karen-yank-objective*
 
-
 - Make use of registers more intentional while remaining intuitive for experienced and novice VIM users.
 
 
@@ -35,9 +34,8 @@ By default, `karen` is mapped to y.
 
 All predefined mappings stay true to VIMs defaults:
 
-
 - a _motion_ like ciw will delete a word and start insert, while yciw will cut a word and start insert. dd deletes a line, ydd cuts a line etc.
-- in _visual_ mode yd pressed in `timeoutlen`will cut. While just y will yank as usual after `timeoutlen` (or immediately when followed by something like a movement with j. So no impairments with fast typing)
+- in _visual_ mode yd pressed in `timeoutlen` will cut. While just y will yank as usual after `timeoutlen` (or immediately when followed by something like a movement with j. So no impairments with fast typing)
 
 To invert the functionality i.e., using `<karen>d` to delete into the black
 hole register, check the config section.
@@ -76,8 +74,8 @@ Defaults:
         -- karen controls the use of registers (and probably talks to the manager when things doesn't work as intended)
         -- map something like `<leader><leader>` if you use the plugin inverted
         karen = "y",
-        -- true: delete into black hole by default and use registers with karen key
-        -- false: use registers by default and delete into black hole with karen key
+        -- false: delete into black hole by default and use registers with karen key
+        -- true: use registers by default and delete into black hole with karen key
         invert = false,
         -- disable all if `true` or a table of keymaps [possible values: {"s"|"S"|"d"|"D"|"c"|"C"|"x"|"X"|"p"|"P"|"y"|"Y"}]
         -- "s"/"S" is not mapped by default, due to it's common utilization for plugins like surround or hop
@@ -155,7 +153,6 @@ WHY?                                                         *karen-yank-why?*
 
 There are a dozen of plugins that deal with VIMs yanks and registers so why
 another one?
-
 
 - karen-yank.nvim is rather a complementary helper than a competitor. E.g., other plugins to use it with:
     - `registers.nvim` <https://github.com/tversteeg/registers.nvim> for a general enhancement of interaction with registers
