@@ -26,7 +26,7 @@ By default, `karen` is mapped to <kbd>y</kbd>.
 All predefined mappings stay true to VIMs defaults:
 
 - a _motion_ like <kbd>ciw</kbd> will delete a word and start insert, while <kbd>yciw</kbd> will cut a word and start insert. <kbd>dd</kbd> deletes a line, <kbd>ydd</kbd> cuts a line etc.
-- in _visual_ mode <kbd>yd</kbd> pressed in <sup>\*</sup>`timeoutlen` will cut. While just <kbd>y</kbd> will yank as usual after `timeoutlen` (or immediately when followed by something like a movement with <kbd>j</kbd>. So no impairments with fast typing)
+- in _visual_ mode <kbd>yd</kbd> pressed in `timeoutlen` will cut. While just <kbd>y</kbd> will yank as usual after `timeoutlen` (or immediately when followed by something like a movement with <kbd>j</kbd>. So no impairments with fast typing)
 
 To invert the functionality i.e., using `<karen>d` to delete into the black hole register, check the config section.
 
