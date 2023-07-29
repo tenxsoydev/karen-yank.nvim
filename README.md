@@ -15,7 +15,7 @@ Karen Yank<br>
 
 After installation there is nothing to do besides enjoying cleaner registers.
 
-Delete keys like <kbd>d</kbd>, <kbd>D</kbd>, <kbd>c</kbd> etc. will genuinely **delete** by default, and **cut** in a `<karen><delete key>` key-chord. The results is that deletions after yanks and cuts won't mess with <kbd>p</kbd> so it will only use the last cut text, the contents of your system clipboard, or a register specified before pasting.
+Delete keys like <kbd>d</kbd>, <kbd>D</kbd>, <kbd>c</kbd> etc. will genuinely **delete** by default, and **cut** in a `<karen><delete key>` key-chord. The result is that deletions after yanks and cuts won't mess with <kbd>p</kbd> - so <kbd>p</kbd> will only use the last cut text, the contents of your system clipboard, or a register specified before pasting.
 
 Your yanks and cuts are also extended to use VIMs number registers while keeping them free of duplicates.
 
